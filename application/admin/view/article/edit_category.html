@@ -1,0 +1,169 @@
+{include file="public/header" /}
+<body class="gray-bg">
+<div class="layui-fluid layui-col-md12">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <a style="background: #1E9FFF;padding: 5px 15px;color: #ffffff;" href="javascript:history.go(-1);">返回</a>
+        </div>
+        <div class="layui-card-header">修改文章分类</div>
+        <div class="layui-card-body layui-form">
+            <div class="layui-row layui-col-space10 layui-form-item ">
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>文章分类</label>
+                    <div class="layui-input-block">
+                        <select name="pid" lay-verify="required">
+                            <option value="">请选择文章分类</option>
+                            <option value="0" {if $category.pid == 0}selected="selected"{/if}>顶级分类</option>
+                            {if !empty($AllCategories)}
+                            {foreach name="$AllCategories" item="vo"}
+                            <option value="{$vo.category_id}" {if $category.pid== $vo.category_id}selected="selected"{/if}>{$vo.placeholder}{$vo.category_name_cn}</option>
+                            {/foreach}
+                            {/if}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>分类名称(中文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="focus_here" class="layui-input " value="{$category.category_name_cn}" name="category_name_cn" lay-verify="required" placeholder="分类名称(中文)">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>分类名称(日文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " value="{$category.category_name_jp}" name="category_name_jp" lay-verify="required" placeholder="分类名称(日文)">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label">目录URL</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " value="{$category.category_url}" name="category_url" placeholder="目录URL">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>是否显示</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="status" value="1" title="是" {if $category.status == 1}checked{/if}>
+                        <input type="radio" name="status" value="0" title="否" {if $category.status == 0}checked{/if}>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label">导航栏显示</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="show_navigation" value="1" title="是" {if $category.show_navigation == 1}checked{/if}>
+                        <input type="radio" name="show_navigation" value="0" title="否" {if $category.show_navigation == 0}checked{/if}>
+
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label">排序(数字越小排越前面)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" value="{$category.sort}" onkeyup="value=value.replace(/[^\d]/g,'')" autocomplete="off" name="sort" placeholder="排序(数字越小排越前面)">
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>关键词(日文)</label>
+                    <div class="layui-input-block">
+                        <textarea name="keywords_jp" class="layui-textarea" lay-verify="required" placeholder="文章描述">{$category.keywords_jp}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>描述(日文)</label>
+                    <div class="layui-input-block">
+                        <textarea name="description_jp" class="layui-textarea" lay-verify="required" placeholder="文章描述">{$category.description_jp}</textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label">图片上传</label>
+                    <input type="hidden" name="thumb" value="{$category.thumb}" id="lay-img1" lay-verify="image" autocomplete="off">
+                    <div class="layui-input-block">
+                        <div id="lay-upload1" class="webuploader-container"><div class="webuploader-pick">选择图片</div><div id="rt_rt_1fe5st5081mgk50u1r5q2t31h82n" style="position: absolute; inset: 0px auto auto 0px; width: 86px; height: 44px; overflow: hidden;"><input type="file" name="file" class="webuploader-element-invisible" accept=".jpg"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label></div></div>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            预览图：
+                            <div class="layui-upload-list" id="lay-img-list1">
+                                {if !empty($category.thumb)}
+                                <img class="layui-append-img" src="{$category.thumb}">
+                                {/if}
+                            </div>
+                        </blockquote>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md10">
+                    <label class="layui-form-label"><em>*</em>内容：</label>
+                    <div class="layui-input-block" >
+                        <textarea name="content" id="LAY_editor2" placeholder="内容">{$category.content}</textarea>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="component-form-element">修改
+                        </button>
+                        <button class="layui-btn layui-btn-primary" onclick="history.back()">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+
+
+<script>
+    wk.uploadImg({size:5,num:1,type:'jpg,png',url:"{:url('Upload/uploadLocality')}"});
+
+    //百度富文本编辑器
+    var editor = UE.getEditor('LAY_editor2', {
+        initialFrameHeight:450,
+        autoHeight: false,
+        autoHeightEnabled:false,
+        autoFloatEnabled:false
+    });
+    editor.ready(function (){
+        editor.execCommand('source');
+        $('#focus_here').focus();
+    });
+
+
+
+    layui.use(['form','upload','layedit','element'], function() {
+        var form = layui.form;
+        form.on('submit(component-form-element)', function (data) {
+            var content = UE.getEditor('LAY_editor2').getContent();
+            data.field.content = content;
+            $('.layui-btn').addClass('layui-disabled').attr('disabled','disabled');
+            $.ajax({
+                url:"{:url('edit_category')}?category_id={$category.category_id}",
+                type:'post',
+                dataType:'json',
+                data:data.field,
+                success:function(res){
+                    if (res.code == 200) {
+                        layer.msg(res.msg,{icon:1,time:1500,shade:0.1},function(index){
+                            // wk.layer_close();
+                            window.location.href="{:url('category_list')}";
+                        })
+                    } else {
+                        $(".layui-btn").removeClass('layui-disabled').removeAttr('disabled');
+                        wk.error(res.msg);
+                        return false;
+                    }
+                }
+            })
+        });
+    });
+
+
+</script>
+</body>
+</html>

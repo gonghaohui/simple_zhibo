@@ -1,0 +1,150 @@
+{include file="public/header" /}
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" id="comment_id" class="layui-input" name="comment_id" placeholder="评论ID"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" id="article_id" class="layui-input" name="article_id" placeholder="文章ID"/>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <select name="status" id="status" class="layui-input">
+                            <option value="-1">全部</option>
+                            <option value="1">审核通过</option>
+                            <option value="2" selected="selected">未审核</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" lay-submit="" lay-filter="LAY-search">立即搜索</button>
+                        <button  class="layui-btn layui-btn-normal" id="empty"  lay-submit="" lay-filter="LAY-search">重置</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-table-manage" lay-filter="LAY-table-manage"></table>
+            <!--类型模板-->
+
+            <!--操作模板-->
+            <script type="text/html" id="opeBar">
+                {{#if(d.status == 2){ }}
+                <a class="layui-btn layui-btn-info layui-btn-xs" title="审核通过" onclick="verify_comment({{d.comment_id}},{{d.pid}})"><i class="fa fa-paper-plane"></i></a>
+                {{# } }}
+                <a class="layui-btn layui-btn-xs" title="编辑-查看" onclick="wk.href('{:url('edit_comment')}?id={{d.comment_id}}')"><i class="fa fa-pencil"></i></a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" title="删除" onclick="del_comment(this,{{d.comment_id}})"><i class="fa fa-trash-o"></i></a>
+
+            </script>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+<script>
+    layui.use(['index', 'table'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+
+        //固定块
+        // util.fixbar({
+        //     css: {right: 20, bottom: 50}
+        //     ,bgcolor: '#393D49'
+        // });
+        table.render({
+            elem: '#LAY-table-manage'
+            , url: '{:url("comment/data_list")}'
+            ,response: {
+                statusCode: 220 //成功的状态码，默认：0
+            }
+            , page: true
+            , even: false //开启隔行背景
+            , size: 'lg' //sm小尺寸的表格 lg大尺寸
+            // ,width:100
+            , autoSort: false
+            , cellMinWidth: 150
+            , limits: [10, 20, 30, 40, 50]
+            , limit: "10"
+            // , height: "full-220"
+            , loading: true
+            , id: 'LAY-table'
+            , cols: [[
+                {field:'class', width: 100, title: '层级', align: 'left'},
+                {field:'comment_id', width: 100, title: 'ID', align: 'center'},
+                {field:'pid', width: 100, title: '父ID', align: 'center'},
+                {field:'article_id', width: 100, title: '文章ID', align: 'center',templet:function (a) {
+                        return '<a style="color: #40b4f7;" href="'+ "https://www.scriptjp.com/article/"+ a.article_id +".html" +'" target="_blank">'+a.article_id+'</a>';
+                    }},
+                {field:'ip_address', width: 100 ,title: 'IP', align: 'center'},
+                {field:'content', width: 350 ,title: '评论', align: 'center'},
+                {field:'status',fixed: 'right', width: 100, title: '状态', align: 'center',templet:function (d) {
+                        if(d.status == 1){
+                            return '<em style="color: blue;font-style: normal;">审核通过</em>';
+                        }else{
+                            return '<em style="color: red;font-style: normal;">未审核</em>';
+                        }
+
+                    }},
+                {field: 'create_time', width: 160, title: '评论时间', align: 'center',templet:"<div>{{layui.util.toDateString(d.create_time,'yyyy-MM-dd HH:mm:ss')}}</div>"},
+                {fixed: 'right', width: '', title: '操作', align: 'center', toolbar: '#opeBar'}
+            ]]
+            ,done: function (res, curr, count) {
+                $('th').children().prop('align','center');
+            }
+        });
+
+
+    });
+
+
+    /**
+     * [del_category 删除菜单]
+     */
+    function del_comment(obj,id){
+        layer.confirm('确认删除吗?', {icon: 7, title:'警告'}, function(index){
+            //do something
+            $.getJSON('{:url("del_comment")}', {'id' : id}, function(res){
+                if(res.code == 200){
+                    wk.success(res.msg,"layui.table.reload('LAY-table');")
+                }else if(res.code == 100){
+                    wk.error(res.msg,"layui.table.reload('LAY-table');");
+                }
+            });
+            layer.close(index);
+        })
+    }
+
+    /**
+     * 审核通过
+     * @param id
+     */
+    function verify_comment(id,pid){
+        $.getJSON('{:url("verify_comment")}', {'id' : id,'pid' : pid}, function(res){
+            if(res.code == 200){
+                wk.success(res.msg,"layui.table.reload('LAY-table');")
+            }else if(res.code == 100){
+                wk.error(res.msg,"layui.table.reload('LAY-table');");
+            }
+        });
+
+    }
+
+
+
+
+</script>
+</body>
+</html>

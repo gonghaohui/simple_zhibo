@@ -1,0 +1,153 @@
+{include file="public/header" /}
+<body class="gray-bg">
+<div class="layui-fluid layui-col-md12">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <a style="background: #1E9FFF;padding: 5px 15px;color: #ffffff;" href="javascript:history.go(-1);">返回</a>
+        </div>
+        <div class="layui-card-header">修改采集数据</div>
+        <div class="layui-card-body layui-form">
+            <div class="layui-row layui-col-space10 layui-form-item ">
+
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label">web_url</label>
+                    <div class="layui-input-block">
+                        <input type="text" readonly="readonly" class="layui-input " value="{$data.web_url}" name="web_url" placeholder="web_url">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>标题(中文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " value="{$data.title_cn}" name="title_cn" lay-verify="required" placeholder="标题(中文)">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>标题(日文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " value="{$data.title_jp}" name="title_jp" lay-verify="required" placeholder="标题(日文)">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label">作者(中文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" value="{$data.author_cn}" name="author_cn"  placeholder="作者(中文)">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label">作者(日文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" value="{$data.author_jp}" name="author_jp"  placeholder="作者(日文)">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>简介(中文)</label>
+                    <div class="layui-input-block">
+                        <textarea name="intro_cn" class="layui-textarea" lay-verify="required" placeholder="简介(中文)">{$data.intro_cn}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>简介(日文)</label>
+                    <div class="layui-input-block">
+                        <textarea name="intro_jp" class="layui-textarea" lay-verify="required" placeholder="简介(日文)">{$data.intro_jp}</textarea>                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>内容(中文)</label>
+                    <div class="layui-input-block">
+                        <textarea name="content_cn" class="layui-textarea" lay-verify="required" style="min-height:600px;">{php}echo htmlspecialchars($data['content_cn'],ENT_QUOTES);{/php}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md10">
+                    <label class="layui-form-label"><em>*</em>内容(日文)：</label>
+                    <div class="layui-input-block" >
+                        <textarea name="content_jp" id="LAY_editor2" placeholder="内容(日文)">{php}echo htmlspecialchars($data['content_jp'],ENT_QUOTES);{/php}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>标签(中文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " value="{$data.tags_cn}" name="tags_cn" lay-verify="required" placeholder="标签(中文),多个标签用，隔开">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>标签(日文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " value="{$data.tags_jp}" name="tags_jp" lay-verify="required" placeholder="标签(日文),多个标签用，隔开">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="component-form-element">修改
+                        </button>
+                        <button class="layui-btn layui-btn-primary" onclick="history.back()">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+
+
+<script>
+    //百度富文本编辑器
+    var editor = UE.getEditor('LAY_editor2', {
+        initialFrameHeight:600,
+        autoHeight: false,
+        autoHeightEnabled:false,
+        autoFloatEnabled:false
+    });
+
+
+
+
+
+    layui.use(['form','upload','layedit','element'], function() {
+        var form = layui.form
+            , layedit = layui.layedit
+        var index = layedit.build('LAY_editor1', {height: 400});
+
+        form.on('submit(component-form-element)', function (data) {
+            // console.log(data);
+            var content_jp = UE.getEditor('LAY_editor2').getContent();
+            // if(content_jp == ''){
+            //     wk.error('日文内容不能为空！');
+            //     return false;
+            // }
+            // alert(content_jp);
+            // layedit.sync(index);
+            data.field.content_jp = content_jp;
+            $('.layui-btn').addClass('layui-disabled').attr('disabled','disabled');
+            $.ajax({
+                url:"{:url('edit_caiji_data')}?caiji_id={$data.caiji_id}&type={$type}",
+                type:'post',
+                dataType:'json',
+                data:data.field,
+                success:function(res){
+                    if (res.code == 200) {
+                        if(res.data == 'ready'){
+                            layer.msg(res.msg,{icon:1,time:1500,shade:0.1},function(index){
+                                // wk.layer_close();
+                                window.location.href="{:url('data_ready_list')}";
+                            })
+                        }else{
+                            layer.msg(res.msg,{icon:1,time:1500,shade:0.1},function(index){
+                                // wk.layer_close();
+                                window.location.href="{:url('data_list')}";
+                            })
+                        }
+                    } else {
+                        $(".layui-btn").removeClass('layui-disabled').removeAttr('disabled');
+                        wk.error(res.msg);
+                        return false;
+                    }
+                }
+            })
+        });
+    });
+
+
+</script>
+</body>
+</html>

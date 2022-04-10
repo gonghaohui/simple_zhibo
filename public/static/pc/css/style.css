@@ -1,0 +1,254 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, hr, button, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+body{font-family: CeraPro,Noto Sans JP,Helvetica-Light,Helvetica,Arial,sans-serif;background: #f9f9f9;}
+p {
+    margin: 0;
+}
+.clearfix {
+    *zoom: 1;
+}
+
+.clearfix:before, .clearfix:after {
+    display: table;
+    line-height: 0;
+    content: "";
+}
+.clearfix:after {
+    clear: both;
+}
+img {
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+    border: 0;
+}
+button, input {
+    overflow: visible;
+    padding: 0px;
+    margin: 0px;
+}
+button, input, select, textarea {
+    font: inherit;
+    margin: 0;
+}
+button, input, select, textarea, a {
+    outline: none;
+}
+
+.top-header .head-top {
+    overflow: hidden;
+    line-height: 40px;
+    background: #f9f9f9;
+    border-bottom: 1px solid #E8E8E8;
+    height: 40px;
+}
+
+.top-box {
+    width: 1200px;
+    height: auto;
+    margin: auto;
+    display: block;
+}
+.head-top span.f-fl {
+    color: #666;
+    font-size: 12px;
+}
+
+.f-fr {
+    float: right;
+    display: inline;
+}
+
+.head-top p.f-fr a {
+    padding: 0px 10px;
+    font-size: 12px;
+    color: #666;
+    border-right: 1px solid #d6d6d6;
+}
+.head-top p.f-fr a:last-of-type {
+    border-right: 0px;
+}
+a, a:visited {
+    text-decoration: none;
+    color: #333;
+}
+.logo-full {
+    background: #fff;
+    overflow: hidden;
+    height: 120px;
+}
+.logo-box {
+    margin-top: 20px;
+    overflow: hidden;
+}
+.f-fl, .f-lifl li, .f-dlfl dt, .f-dlfl dd {
+    float: left;
+    display: inline;
+}
+.top-box .top-logo {
+    width: 235px;
+    height: 80px;
+    display: block;
+    float: left;
+}
+.logo-box p {
+    width: 235px;
+    height: 35px;
+    overflow: hidden;
+    float: left;
+    margin-left: 20px;
+    margin-top: 22px;
+}
+.f-fr {
+    float: right;
+    display: inline;
+}
+.top-search {
+    overflow: hidden;
+    height: 36px;
+    margin-top: 42px;
+    background: #f0f0f1;
+    border-radius: 18px;
+}
+.top-search .search-input {
+    width: 290px;
+    height: 36px;
+    padding: 0px 10px 0px 15px;
+    background: 0 0;
+    border: none;
+    float: left;
+    font-size: 14px;
+    line-height: 30px;
+}
+.top-search .top-search-btn {
+    float: right;
+    width: 36px;
+    height: 36px;
+    overflow: hidden;
+    font-size: 0;
+    border: none;
+    background: url(../images/vspr.png) 5px -82px no-repeat;
+    cursor: pointer;
+}
+.top-category-select{
+    height: 36px;
+    float: left;
+    margin-left: 16px;
+    background: 0 0;
+    border: none;
+    font-size: 12px;
+}
+.top-nav {
+    overflow: hidden;
+    background: #40b4f7;
+    height: 43px;
+}
+.top-nav ul li {
+    float: left;
+    overflow: hidden;
+}
+.top-nav ul li a {
+    display: block;
+    line-height: 43px;
+    text-align: center;
+    color: #fff;
+    font-size: 13px;
+    padding: 0 16px;
+}
+
+.top-nav ul li:hover {
+    background: #39a0e2;
+    color: #fff;
+    text-decoration: none;
+}
+.footer {
+    background: #000;
+    clear: both;
+    /* border-top: 1px solid #ddd; */
+    margin-top: 30px;
+    padding: 20px 0;
+    text-align: center;
+    overflow: hidden;
+}
+.footer-nav{
+    color: #bbb;
+    margin-top: 10px;
+    height: 24px;
+    line-height: 24px;
+    overflow: hidden;
+}
+.footer-nav a {
+    color: #333;
+}
+.footer-nav span {
+    margin: 0 15px;
+    color: #333;
+    font-size: 12px;
+}
+.footer p {
+    color: #FFF;
+    text-align: center;
+    font-size: 12px;
+    margin-top: 10px;
+    height: 24px;
+    line-height: 24px;
+}
+.up-float {
+    width: 60px;
+    height: auto;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    cursor: pointer;
+    margin-left: 610px;
+    z-index: 100;
+}
+.up-float #top-back {
+    height: 0px;
+    background: url(../images/sp-gotop.png) no-repeat;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    float: left;
+    display: block;
+    overflow: hidden;
+}
+.up-float #top-back:hover {
+    background-position: -60px 0;
+}
+.up-float a {
+    width: 100%;
+    height: 60px;
+    margin: 1px 0 0 0;
+    display: block;
+    overflow: hidden;
+}
+
+#wrapper{
+    width: 1200px;
+    margin: auto;
+}
+.blank {
+    height: 20px;
+}
+.clear{
+    clear: both;
+}
+.clearfix:after, .clearfix:before {
+    content: "";
+    display: table;
+}
+
+.top-header{
+    min-width: 1200px;
+}
+.tjcon .thumb img {
+    width: 138px;
+}
+
+

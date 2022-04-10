@@ -1,0 +1,121 @@
+{include file="public/header" /}
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+            <div>
+                <button class="layui-btn" data-type="add" onclick="wk.href('{:url('add_link')}')">
+                    <i class="fa fa-plus"></i> 添加友链
+                </button>
+
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-table-manage" lay-filter="LAY-table-manage"></table>
+            <!--类型模板-->
+
+            <!--状态模板-->
+            <script type="text/html" id="staBar">
+                <input type="checkbox" value="{{d.link_id}}"  lay-skin="switch"  lay-text="ON|OFF" lay-filter="OnOff"{{ d.is_show == 1 ? 'checked' : '' }}  >
+            </script>
+
+            <!--操作模板-->
+            <script type="text/html" id="opeBar">
+                <a class="layui-btn layui-btn-danger layui-btn-xs" title="删除" onclick="del_link(this,{{d.link_id}})"><i class="fa fa-trash-o"></i></a>
+
+            </script>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+<script>
+    layui.use(['index', 'table'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+
+        //固定块
+        // util.fixbar({
+        //     css: {right: 20, bottom: 50}
+        //     ,bgcolor: '#393D49'
+        // });
+        table.render({
+            elem: '#LAY-table-manage'
+            , url: '{:url("link/data_list")}'
+            ,response: {
+                statusCode: 220 //成功的状态码，默认：0
+            }
+            , page: true
+            , even: false //开启隔行背景
+            , size: 'lg' //sm小尺寸的表格 lg大尺寸
+            // ,width:100
+            , autoSort: false
+            , cellMinWidth: 150
+            , limits: [10, 20, 30, 40, 50]
+            , limit: "50"
+            // , height: "full-220"
+            , loading: true
+            , id: 'LAY-table'
+            , cols: [[
+                {field:'link_id', width: 100, title: 'ID', align: 'center'},
+                {field: 'link_name', width: '' ,title: '链接名称', align: 'left',edit: 'text',templet:'<div>{{d.link_name}}</div>'},
+                {field: 'link_url', width: '' ,title: '链接地址', align: 'left',edit: 'text',templet:'<div>{{d.link_url}}</div>'},
+                {field: 'orderby', width: 80 ,title: '排序', align: 'left',edit: 'text',templet:'<div>{{d.orderby}}</div>'},
+                {field: 'is_show',fixed: 'right', width: 100, title: '显示', align: 'center', templet: '#staBar'},
+                {fixed: 'right', width: 130, title: '操作', align: 'center', toolbar: '#opeBar'}
+            ]]
+            ,done: function (res, curr, count) {
+                $('th').children().prop('align','center');
+            }
+        });
+
+        //监听状态开关操作
+        form.on('switch(OnOff)', function (obj) {
+            var num = '';
+            obj.elem.checked == true? num = 1: num = 0;
+            //菜单状态
+            wk.status(this.value,num, '{:url("status_state")}',obj);
+        });
+
+        //监听单元格编辑
+        table.on('edit(LAY-table-manage)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            // layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+            if(field == 'sort'){
+                if(!/^(0|[1-9]\d*)$/.test(value)){
+                    layer.msg('排序值只能为非负整数',{icon:2,time:1500,shade: 0.1},function(){
+                        //重载当前页表格
+                        $(".layui-laypage-btn").click();
+                    });
+                    return false;
+                }
+            }
+            wk.change(data.link_id,"{:url('editField')}",field,value,'friend_link');
+        });
+
+    });
+
+
+    /**
+     * [del_category 删除菜单]
+     */
+    function del_link(obj,id){
+        layer.confirm('确认删除吗?', {icon: 7, title:'警告'}, function(index){
+            //do something
+            $.getJSON('{:url("del_link")}', {'id' : id}, function(res){
+                if(res.code == 200){
+                    wk.success(res.msg,"layui.table.reload('LAY-table');")
+                }else if(res.code == 100){
+                    wk.error(res.msg,"layui.table.reload('LAY-table');");
+                }
+            });
+            layer.close(index);
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+{include file="public/header" /}
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+            <div class="layui-form-item">
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" id="uid" class="layui-input" name="uid" placeholder="ID" autocomplete="off">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" class="layui-input" name="name" placeholder="呢称"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" id="explorer_key" class="layui-input" name="explorer_key" placeholder="浏览器标识"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <select name="online_status" id="online_status" class="layui-input">
+                            <option value="" selected="selected">在线状态</option>
+                            <option value="0">不在线</option>
+                            <option value="1">在线</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <select name="chat_status" id="chat_status" class="layui-input">
+                            <option value="" selected="selected">禁言状态</option>
+                            <option value="1">聊天模式</option>
+                            <option value="0">已禁言</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <select name="status" id="status" class="layui-input">
+                            <option value="" selected="selected">用户状态</option>
+                            <option value="0">已冻结</option>
+                            <option value="1">正常</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" lay-submit="" lay-filter="LAY-search">立即搜索</button>
+                        <button  class="layui-btn layui-btn-normal" id="empty"  lay-submit="" lay-filter="LAY-search">重置</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-table-manage" lay-filter="LAY-table-manage"></table>
+            <!--类型模板-->
+
+            <!--状态模板-->
+            <script type="text/html" id="staChatBar">
+                <input type="checkbox" value="{{d.uid}}"  lay-skin="switch"  lay-text="ON|OFF" lay-filter="OnOffChat"{{ d.chat_status == 0 ? 'checked' : '' }} >
+            </script>
+
+            <script type="text/html" id="staBar">
+                <input type="checkbox" value="{{d.uid}}"  lay-skin="switch"  lay-text="ON|OFF" lay-filter="OnOff"{{ d.status == 1 ? 'checked' : '' }} >
+            </script>
+            <!--操作模板-->
+
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+<script>
+    layui.use(['index', 'table','util'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+            , util = layui.util
+        //固定块
+        util.fixbar({
+            css: {right: 20, bottom: 50}
+            ,bgcolor: '#393D49'
+        });
+        table.render({
+            elem: '#LAY-table-manage'
+            , url: '{:url("users/index")}'
+            ,response: {
+                statusCode: 220 //成功的状态码，默认：0
+            }
+            , page: true
+            , even: false //开启隔行背景
+            , size: 'lg' //sm小尺寸的表格 lg大尺寸
+            // ,width:100
+            , autoSort: false
+            , cellMinWidth: 150
+            , limits: [10, 20, 30, 40, 50]
+            , limit: "50"
+            // , height: "full-220"
+            , loading: true
+            , id: 'LAY-table'
+            , cols: [[
+                {field:'uid', width: 80, title: 'ID', align: 'center'}
+                , {field: 'name', width: '' ,title: '呢称', align: 'left'}
+                , {field: 'explorer_key', width: '' ,title: '浏览器标识', align: 'left'}
+                , {field: 'online_status', width: 120 ,title: '在线状态', align: 'center',templet:function (d) {
+                        if(d.status == 1){
+                            return '<em style="color: green;font-style: normal;">在线</em>';
+                        }else{
+                            return '<em style="color: #009688;font-style: normal;">不在线</em>';
+                        }
+
+                    }}
+
+                , {field: 'chat_status',fixed: 'right', width: 100, title: '禁言', align: 'center', templet: '#staChatBar'}
+                , {field: 'status',fixed: 'right', width: 100, title: '用户状态', align: 'center', templet: '#staBar'}
+
+                , {field: 'ip', width: '' ,title: '最近登陆IP', align: 'center'}
+                ,{field: 'create_time', width: 160, title: '创建时间', align: 'center',templet:"<div>{{layui.util.toDateString(d.create_time,'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                // {fixed: 'right', width: 130, title: '操作', align: 'center', toolbar: '#opeBar'}
+            ]]
+            ,done: function (res, curr, count) {
+                $('th').children().prop('align','center');
+            }
+        });
+        //监听状态开关操作
+        form.on('switch(OnOffChat)', function (obj) {
+            var num = '';
+            obj.elem.checked == true? num = 0: num = 1;
+            //状态
+            wk.status(this.value,num, '{:url("users_chat_state")}',obj);
+        });
+        form.on('switch(OnOff)', function (obj) {
+            var num = '';
+            obj.elem.checked == true? num = 1: num = 0;
+            //状态
+            wk.status(this.value,num, '{:url("users_state")}',obj);
+        });
+
+
+
+    });
+
+
+</script>
+</body>
+</html>

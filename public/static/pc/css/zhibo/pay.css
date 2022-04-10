@@ -1,0 +1,71 @@
+
+.pay-base-win{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 99;
+}
+.pay-win-mask{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: #666;
+    opacity: 0.3;
+    top: 0;
+    z-index: 99;
+}
+.pay-win-container{
+    width: 200px;
+    background-color: #fff;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-52%,-50%);
+    margin-top: -2%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    border-radius: 3px;
+    z-index: 100;
+}
+
+/* 浜岀淮鐮佸脊绐�*/
+.qr-code-header{
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
+.qr-code-container{
+    padding: 0 10px
+}
+.qr-code-content{
+}
+.qr-code-footer{
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+#qrcode{
+    width: 150px;
+    height: 150px;
+    margin: 10px auto;
+}
+
+.item-input{
+    cursor: pointer;
+}
+.wechat-pay-tip{
+    padding: 20px 0;
+}
+
+@media screen and (max-width: 768px){
+    .pop .pop-modal-content{
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+/* PC绔‘璁ゆ槸鍚﹀厖鍊煎脊绐楁牱寮�*/
+.pay-wechat-true-win .pay-tip-container{
+    width: 262px;
+}

@@ -1,0 +1,8 @@
+.idea
+composer.lock
+*.log
+application/database.php
+application/route.php
+/runtime/
+.user.ini
+/public/log/

@@ -1,0 +1,186 @@
+{include file="public/header" /}
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+            <div class="layui-form-item">
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" id="fid" class="layui-input" name="fid" placeholder="ID" autocomplete="off">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" id="word" class="layui-input" name="word" placeholder="禁词"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <select name="status" id="status" class="layui-input">
+                            <option value="" selected="selected">状态</option>
+                            <option value="0">已禁用</option>
+                            <option value="1">已启用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" lay-submit="" lay-filter="LAY-search">立即搜索</button>
+                        <button  class="layui-btn layui-btn-normal" id="empty"  lay-submit="" lay-filter="LAY-search">重置</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="layui-btn" data-type="add" onclick="wk.layer_show('添加禁词','{:url('forbiddenWordAdd')}')">
+                    <i class="fa fa-plus"></i> 添加禁词
+                </button>
+                <span class="layui-btn-dropdown" style="display:inline-block;">
+                    <button class="layui-btn layui-btn-danger" data-toggle="dropdown"><i class="fa fa-wrench"></i> 批量操作 <i class="fa fa-caret-down"></i></button>
+                    <ul class="layui-dropdown-menu layui-anim layui-anim-upbit">
+                        <li><a href="javascript:;" class="layuiBtn" data-type="getCheckData"><i class="fa fa-trash-o"></i> 批量删除 </a></li>
+                        <li><a  href="javascript:;" class="layuiBtn" data-type="usingAll"><i class="fa fa-check-circle"></i> 批量启用</a></li>
+                        <li><a  href="javascript:;" class="layuiBtn" data-type="forbiddenAll"><i class="fa fa-ban"></i> 批量禁用</a></li>
+                    </ul>
+                </span>
+            </div>
+
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-table-manage" lay-filter="LAY-table-manage"></table>
+            <!--类型模板-->
+
+            <!--状态模板-->
+            <script type="text/html" id="staBar">
+                <input type="checkbox" value="{{d.fid}}"  lay-skin="switch"  lay-text="ON|OFF" lay-filter="OnOff"{{ d.status == 1 ? 'checked' : '' }} >
+            </script>
+
+            <!--操作模板-->
+            <script type="text/html" id="opeBar">
+                <a class="layui-btn layui-btn-danger layui-btn-xs" id="del_{{d.fid}}" title="删除" onclick="del_word({{d.fid}})"><i class="fa fa-trash-o"></i></a>
+            </script>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+<script>
+    layui.use(['index', 'table','util'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+            , util = layui.util
+        //固定块
+        util.fixbar({
+            css: {right: 20, bottom: 50}
+            ,bgcolor: '#393D49'
+        });
+        table.render({
+            elem: '#LAY-table-manage'
+            , url: '{:url("live/forbidden")}'
+            ,response: {
+                statusCode: 220 //成功的状态码，默认：0
+            }
+            , page: true
+            , even: false //开启隔行背景
+            , size: 'lg' //sm小尺寸的表格 lg大尺寸
+            // ,width:100
+            , autoSort: false
+            , cellMinWidth: 150
+            , limits: [10, 20, 30, 40, 50]
+            , limit: "50"
+            // , height: "full-220"
+            , loading: true
+            , id: 'LAY-table'
+            , cols: [[
+                {type: 'checkbox', fixed: 'left',},
+                {field:'fid', width: 80, title: 'ID', align: 'center'}
+                , {field: 'word', width: '' ,title: '禁词', align: 'left',edit: 'text',templet:'<div>{{d.word}}</div>'}
+                , {field: 'status',fixed: 'right', width: 100, title: '状态', align: 'center', templet: '#staBar'},
+                {fixed: 'right', width: 130, title: '操作', align: 'center', toolbar: '#opeBar'}
+            ]]
+            ,done: function (res, curr, count) {
+                $('th').children().prop('align','center');
+            }
+        });
+        //监听状态开关操作
+        form.on('switch(OnOff)', function (obj) {
+            var num = '';
+            obj.elem.checked == true? num = 1: num = 0;
+            //角色状态
+            wk.status(this.value,num, '{:url("forbidden_word_state")}',obj);
+        });
+
+        //事件
+        var active = {
+            getCheckData: function(){
+                //批量删除
+                wk.batchDel(getIds(),"{:url('batchDelForbiddenWord')}");
+            }
+            ,forbiddenAll: function(){
+                //批量禁用
+                wk.batchForbidden(getIds(),2,"{:url('banForbiddenWord')}");
+            }
+            ,usingAll: function(){
+                //批量启用
+                wk.usingAll(getIds(),1,"{:url('usingForbiddenWord')}");
+            }
+        };
+        $('.layuiBtn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        var getIds = function () {
+            var ids = [];
+            var checkStatus = table.checkStatus('LAY-table')
+                ,data = checkStatus.data;
+            $.each(data,function(index,item){
+                ids.push(item['fid'])
+            });
+            return ids;
+        }
+
+        //监听单元格编辑
+        table.on('edit(LAY-table-manage)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            // layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+            if(field == 'sort'){
+                if(!/^(0|[1-9]\d*)$/.test(value)){
+                    layer.msg('排序值只能为非负整数',{icon:2,time:1500,shade: 0.1},function(){
+                        //重载当前页表格
+                        $(".layui-laypage-btn").click();
+                    });
+                    return false;
+                }
+            }
+            wk.change(data.fid,"{:url('editField')}",field,value,'forbidden_words');
+        });
+
+
+
+
+    });
+
+    /**
+     * [del_word 删除禁词]
+     */
+    function del_word(id){
+        layer.confirm('确认删除该禁词吗?', {icon: 7, title:'警告'}, function(index){
+            //do something
+            $.getJSON('{:url("del_word")}', {'id' : id}, function(res){
+                if(res.code == 200){
+                    wk.success(res.msg,"layui.table.reload('LAY-table');")
+                }else if(res.code == 100){
+                    wk.error(res.msg,"layui.table.reload('LAY-table');");
+                }
+            });
+            layer.close(index);
+        })
+    }
+
+</script>
+</body>
+</html>

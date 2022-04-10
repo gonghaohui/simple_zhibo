@@ -1,0 +1,168 @@
+.tags {
+    position: relative;
+    overflow: hidden;
+
+}
+.whitebg {
+    background: #fff;
+    border: 1px solid #eee;
+    margin-top: 20px;
+}
+.news-title {
+    border-bottom: #e4e3e3 1px solid;
+    margin: 20px;
+    padding-bottom: 10px;
+    overflow: hidden;
+}
+.news-title h2 {
+    color: #40b4f7;
+    font-size: 16px;
+    font-weight: normal;
+    position: relative;
+    float: left;
+    /* width: 84px; */
+    text-align: center;
+}
+.tags ul {
+    margin: 0 20px 20px;
+    overflow: hidden;
+}
+.tags ul a {
+    display: block;
+    float: left;
+    font-size: 12px;
+    width: 10%;
+    text-align: center;
+    height: 16px;
+    margin-bottom: 4px;
+    background-color: #f9f9f9;
+    color: #615f5f;
+    padding: 10px 0;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.tags ul a:hover {
+    background: #40b4f7;
+    color: #fff;
+}
+.tags ul a:before {
+    left: 0;
+}
+.tags ul a:after {
+    right: 0;
+}
+.tags ul a:after, .tags ul a:before {
+    content: "";
+    background: #fff;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    position: absolute;
+}
+.news-title h2:after {
+    content: "";
+    background: #40b4f7;
+    /*background: linear-gradient(to right, #EB3D41 0%, #fa575b 100%);*/
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+}
+.links ul {
+    margin: 0 20px 20px;
+    overflow: hidden;
+}
+.links ul li a {
+    float: left;
+    margin: 0 10px;
+    line-height: 40px;
+    padding: 0 5px;
+    position: relative;
+    display: block;
+}
+
+.links ul, .links li {
+    list-style: none;
+}
+.links ul li a:after {
+    content: "";
+    background: #EB3D41;
+    background: linear-gradient(to right, #0062ff 0%, #00a0ec 100%);
+    width: 20%;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 40%;
+    opacity: 0;
+    -moz-transition: all .5s ease;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+.links ul li a:hover:after {
+    opacity: 1;
+    width: 100%;
+    margin: auto;
+    display: block;
+    left: 0;
+}
+
+.index-ll{
+    width: 375px;
+    margin-left: 17px;
+    float: left;
+    margin-bottom: 20px;
+    min-height: 428px;
+}
+
+.index-ll .title h2{
+    font-size: 16px;
+}
+
+.index-ll .title {
+    font-size: 16px;
+    margin: 10px 0 12px;
+    line-height: 45px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 1px solid #e5e5e5;
+}
+.index-ll .title a.more {
+    color: #666666;
+    float: right;
+    font-weight: lighter;
+    line-height: 18px;
+    margin: 14px 0 13px;
+    font-size: 13px;
+}
+.index-ll .title a {
+    color: #585858;
+    text-decoration: none;
+}
+.index-ll .list{
+    line-height: 30px;
+}
+.index-ll .list li{
+    width: 100%;
+    list-style: none;
+}
+.index-ll .list li a{
+    padding-left: 9px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+    line-height: 30px;
+    height: 30px;
+    overflow: hidden;
+    font-size: 14px;
+}
+.index-ll .list li a:hover{
+    color: #40b4f7;
+}
+.title a h2:hover{
+    color: #39a0e2;
+}

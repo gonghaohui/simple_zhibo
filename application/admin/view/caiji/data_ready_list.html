@@ -1,0 +1,192 @@
+{include file="public/header" /}
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" id="caiji_id" class="layui-input" name="caiji_id" placeholder="数据ID"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" id="title_cn" class="layui-input" name="title_cn" placeholder="数据标题"/>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <select name="category" id="category" class="layui-input">
+                            <option value="">全部分类</option>
+                            {foreach name="$AllCategories" item="vo"}
+                            <option value="{$vo.category_id}">{$vo.placeholder}{$vo.category_name_cn}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" lay-submit="" lay-filter="LAY-search">立即搜索</button>
+                        <button  class="layui-btn layui-btn-normal" id="empty"  lay-submit="" lay-filter="LAY-search">重置</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <span class="layui-btn-dropdown" style="display:inline-block;">
+                    <button class="layui-btn layui-btn-danger" data-toggle="dropdown"><i class="fa fa-wrench"></i> 批量操作 <i class="fa fa-caret-down"></i></button>
+                    <ul class="layui-dropdown-menu layui-anim layui-anim-upbit">
+                        <li><a href="javascript:;" class="layuiBtn" data-type="getCheckData"><i class="fa fa-trash-o"></i> 批量删除 </a></li>
+                    </ul>
+                </span>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-table-manage" lay-filter="LAY-table-manage"></table>
+            <!--类型模板-->
+
+            <!--状态模板-->
+
+            <!--操作模板-->
+            <script type="text/html" id="opeBar">
+
+                <a class="layui-btn layui-btn-xs" title="编辑" onclick="wk.href('{:url('edit_caiji_data')}?id={{d.caiji_id}}&type=ready')"><i class="fa fa-pencil"></i></a>
+
+                {{#if(d.publish == 3){ }}
+                <a class="layui-btn layui-btn-danger layui-btn-xs" id="del_{{d.caiji_id}}" title="删除" onclick="del_caiji_data(this,{{d.caiji_id}})"><i class="fa fa-trash-o"></i></a>
+                {{# } }}
+
+                {{#if(d.publish == 2){ }}
+                <a class="layui-btn layui-btn-danger layui-btn-xs" title="恢复数据" onclick="restore_caiji_data(this,{{d.caiji_id}})"><i class="fa fa-recycle"></i></a>
+                {{# } }}
+
+                {{#if(d.caiji_images == 1 && d.publish != 1 && d.title_jp != null){ }}
+                <a class="layui-btn layui-btn-info layui-btn-xs" title="发布" onclick="publish_article({{d.caiji_id}})"><i class="fa fa-paper-plane"></i></a>
+                {{# } }}
+
+            </script>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+<script>
+    layui.use(['index', 'table'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+
+        //固定块
+        // util.fixbar({
+        //     css: {right: 20, bottom: 50}
+        //     ,bgcolor: '#393D49'
+        // });
+        table.render({
+            elem: '#LAY-table-manage'
+            , url: '{:url("caiji/data_ready_list")}'
+            ,response: {
+                statusCode: 220 //成功的状态码，默认：0
+            }
+            , page: true
+            , even: false //开启隔行背景
+            , size: 'lg' //sm小尺寸的表格 lg大尺寸
+            // ,width:100
+            , autoSort: false
+            , cellMinWidth: 150
+            , limits: [10, 20, 30, 40, 50]
+            , limit: "50"
+            // , height: "full-220"
+            , loading: true
+            , id: 'LAY-table'
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'},
+                {field:'caiji_id', width: 100, title: 'ID', align: 'center'},
+                {field:'web_type', width: 100, title: '网站', align: 'center'},
+                {field: 'first_category', width: 150 ,title: '一级分类', align: 'left'},
+                {field: 'second_category', width: 150 ,title: '二级分类', align: 'left'},
+                {field: 'third_category', width: 150 ,title: '三级分类', align: 'left'},
+                {field: 'title_cn', width: '' ,title: '标题', align: 'left'},
+                {field: 'publish', width: 100 ,title: '状态', align: 'center',templet:function (d) {
+                        if(d.publish == 0){
+                            return '未发布';
+                        }else if(d.publish == 1){
+                            return '<em style="color: #009688;font-style: normal;">已发布</em>';
+                        }else if(d.publish == 3){
+                            return '<em style="color: #009688;font-style: normal;">准备发布</em>';
+                        }else{
+                            return '<em style="color: red;font-style: normal;">已删除</em>';
+                        }
+
+                    }},
+                // {field: 'create_time', width: '', title: '采集时间', align: 'center',templet:"<div>{{layui.util.toDateString(d.create_time,'yyyy年MM月dd日')}}</div>"},
+                {fixed: 'right', width: 180, title: '操作', align: 'center', toolbar: '#opeBar'}
+            ]]
+            ,done: function (res, curr, count) {
+                $('th').children().prop('align','center');
+            }
+        });
+
+        //事件
+        var active = {
+            getCheckData: function(){
+                //批量删除
+                wk.batchDel(getIds(),"{:url('batchDelCaijiDatas')}");
+            }
+        };
+        $('.layuiBtn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        var getIds = function () {
+            var ids = [];
+            var checkStatus = table.checkStatus('LAY-table')
+                ,data = checkStatus.data;
+            $.each(data,function(index,item){
+                ids.push(item['caiji_id'])
+            });
+            return ids;
+        }
+    });
+
+    /**
+     * [publish_article 发布文章]
+     */
+    function publish_article(id){
+        $.getJSON('{:url("publish_article")}', {'id' : id}, function(res){
+            if(res.code == 200){
+                wk.success(res.msg,"layui.table.reload('LAY-table');")
+            }else if(res.code == 100){
+                wk.error(res.msg,"layui.table.reload('LAY-table');");
+            }
+        });
+    }
+
+    /**
+     * [del_caiji_data 把文章放到回收站]
+     */
+    function del_caiji_data(obj,id){
+        // wk.confirm(id,'{:url("del_rule")}');
+        layer.confirm('确认删除吗?', {icon: 7, title:'警告'}, function(index){
+            //do something
+            $.getJSON('{:url("del_caiji_data")}', {'id' : id}, function(res){
+                if(res.code == 200){
+                    // layer.msg(res.msg,{icon:1,time:1500,shade: 0.1},function(index){
+                    //     layer.close(index);
+                    //     var num = res.data.split(',');
+                    //     $.each(num, function (index, item) {
+                    //         $('#del_' + item).parents("tr").remove();
+                    //     })
+                    //     layui.table.reload('LAY-table');
+                    // });
+                    wk.success(res.msg,"layui.table.reload('LAY-table');")
+                }else if(res.code == 100){
+                    wk.error(res.msg,"layui.table.reload('LAY-table');");
+                }
+            });
+            layer.close(index);
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>输入密码，进入直播间</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-cn"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <link rel="icon" type="image/x-icon" href="__PC_IMG__/icon/favicon32.ico">
+
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/bootstrap.css?ver=1.01" >
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/common.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/login.css?v=190808" media="all"/>
+
+
+    <script type="text/javascript" src="__PC_JS__/jquery.min.js"></script>
+
+    <style type="text/css">
+        /*登陆*/
+        #login {
+            min-height: 435px;
+        }
+
+    </style>
+</head>
+<body class="logReg">
+<header type="simple">
+    <div class="signtop">
+        <div class="container">
+            <a class="logo" href="#">
+                <img src="/static/pc/images/header_logo_pc.png">
+            </a>
+        </div>
+    </div>
+</header>
+<div class="fixedbar"></div>
+
+<section id="container">
+    <div id="output"></div>
+    <div class="gradient"></div>
+
+    <!-- 登录 -->
+    <section id="login" class="mainOp">
+        <div class="login-tit">
+            <span><b>请输入{$lid}号房间密码</b></span>
+
+        </div>
+        <div class="login-left">
+            <div class="ctl-group">
+                <div class="edit-box ctl-bar">
+                    <input type="password" class="wbox info" id="login_possward" placeholder="密码" name="password">
+                    <div class="alert-warn"></div>
+                </div>
+            </div>
+            <div class="ctl-group" id="login_input_area">
+                <a class="btn-submit btn btn-primary" id="login_submit">
+                    <span class="login-btn-txt">登录{$lid}号房间</span>
+                </a>
+            </div>
+
+
+        </div>
+    </section>
+
+    <!-- 验证码登陆 -->
+
+</section>
+<div class="h100"></div>
+<footer type="simple"></footer>
+
+
+
+
+
+<script>
+    var userSign = localStorage.getItem('zhibo_sign');
+    if(!userSign){
+        //自动创建用户
+        $.ajax({
+            type: "POST",
+            url: "/live/auto_create_new_user",
+            data: {},
+            dataType: "json",
+            error: function () {
+                layer.alert("error");
+            },
+            success: function (data) {
+                if(data.code == 200){
+                    localStorage.setItem('zhibo_sign',data.sign);
+                }
+            }
+        });
+    }
+
+    $("#login_submit").click(function () {
+        let pwd = $("#login_possward").val();
+        if(pwd == ''){
+            alert("请输入密码");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/live/check_house_pwd",
+            data: {pwd:pwd,lid:{$lid}},
+            dataType: "json",
+            error: function () {
+                layer.alert("error");
+            },
+            success: function (data) {
+                if(data.code == 200){
+                    sessionStorage.setItem('zhibo_house_right',data.lid);
+                    location.href = "/live/"+data.lid+".html";
+                }else{
+                    alert(data.info);
+                }
+            }
+        });
+    });
+
+</script>
+
+
+</body>
+</html>

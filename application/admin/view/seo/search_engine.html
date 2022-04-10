@@ -1,0 +1,54 @@
+{include file="public/header" /}
+<body>
+<style>
+    .layui-btn{
+        margin-bottom: 20px !important;
+    }
+    .layui-btn+.layui-btn{
+        margin-left: 0px !important;
+        /*margin-right: 15px !important;*/
+    }
+    .layui-btn .layui-btn{
+        margin-right: 15px !important;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+            <div>
+                <button class="layui-btn" data-type="add" onclick="send_bing()">
+                    <i class="fa fa-plus"></i> 推送当天更新到bing
+                </button>
+
+                <a href="/seo/get_today_update" target="_blank"><button class="layui-btn layui-btn-info">
+                    获取今天更新的文章网址
+                </button>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{include file="public/footer" /}
+<script>
+    function send_bing(){
+        alert('未用得');
+        return;
+        $.ajax({
+            type: 'post',
+            url: '{:url("send_bing")}',
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                if(data.code == 200){
+                    wk.success(data.msg)
+                }else if(data.code == 100){
+                    wk.error(data.msg);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

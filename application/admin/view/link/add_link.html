@@ -1,0 +1,88 @@
+{include file="public/header" /}
+<body class="gray-bg">
+<div class="layui-fluid layui-col-md12">
+    <div class="layui-card">
+
+        <div class="layui-card-header">
+            <a style="background: #1E9FFF;padding: 5px 15px;color: #ffffff;" href="javascript:history.go(-1);">返回</a>
+        </div>
+        <div class="layui-card-header">添加友情链接</div>
+        <div class="layui-card-body layui-form">
+            <div class="layui-row layui-col-space10 layui-form-item ">
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>链接名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " name="link_name" lay-verify="required" placeholder="链接名称">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>链接地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " name="link_url" lay-verify="required" placeholder="链接地址">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label">排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " name="orderby" value="0" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="排序(数字越大越靠前)">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>是否显示</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="is_show" value="1" title="是" checked>
+                        <input type="radio" name="is_show" value="0" title="否" >
+                    </div>
+                </div>
+
+
+
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="component-form-element">保存
+                        </button>
+                        <button class="layui-btn layui-btn-primary" onclick="history.back()">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+
+
+<script>
+    layui.use(['form','upload','layedit','element'], function() {
+        var form = layui.form
+
+        form.on('submit(component-form-element)', function (data) {
+            $('.layui-btn').addClass('layui-disabled').attr('disabled','disabled');
+            $.ajax({
+                url:"{:url('add_link')}",
+                type:'post',
+                dataType:'json',
+                data:data.field,
+                success:function(res){
+                    if (res.code == 200) {
+                        layer.msg(res.msg,{icon:1,time:1500,shade:0.1},function(index){
+                            // wk.layer_close();
+                            window.location.href="{:url('data_list')}";
+                        })
+                    } else {
+                        $(".layui-btn").removeClass('layui-disabled').removeAttr('disabled');
+                        wk.error(res.msg);
+                        return false;
+                    }
+                }
+            })
+        });
+    });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+{include file="public/header" /}
+<body class="gray-bg">
+<style>
+    .t-select {
+        display: inline-block;
+        border: 1px solid #5FB878;
+        margin-top: 5px;
+        margin-left: 5px;
+        margin-right: 2px;
+        padding: 2px 5px;
+        background-color: #5FB878;
+        border-radius: 2px;
+        color: #FFF;
+        line-height: 18px;
+        height: 18px;
+        cursor: initial;
+        font-size: 14px;
+    }
+    .lay-table-select-close {
+        cursor: pointer;
+        font-size: 13px;
+        padding-left: 4px;
+    }
+    .t-select-box .t-select i:hover{
+        background: #8cb85f;
+    }
+
+</style>
+<div class="layui-fluid layui-col-md12">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <a style="background: #1E9FFF;padding: 5px 15px;color: #ffffff;" href="javascript:history.go(-1);">返回</a>
+        </div>
+        <div class="layui-card-header">修改文章标签</div>
+        <div class="layui-card-body layui-form">
+            <div class="layui-row layui-col-space10 layui-form-item ">
+
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" disabled="disabled" value="{$data.article_id}" id="article_id" name="article_id" placeholder="ID">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" disabled="disabled" value="{$data.title}" name="title" placeholder="标题">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>关键词(标签)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" disabled="disabled" value="{$data.keywords}" name="keywords" placeholder="关键词">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>标签</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" value="" name="tags" id="tags" placeholder="标签,多个请用,号隔开">
+                        <div class="t-select-box">
+                            {foreach name="$tags" item="tag"}
+                            <span class="t-select">{$tag.tag_name_jp}<i class="layui-icon layui-icon-close lay-table-select-close" onclick="del_tag({$tag.r_id},{$tag.tag_id});"></i></span>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" id="add_tags">添加标签
+                        </button>
+                        <button class="layui-btn layui-btn-primary" onclick="history.back()">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+
+
+<script>
+
+    function del_tag(r_id,tag_id){
+        if(r_id == '' || tag_id == '')
+        {
+            alert('error');
+            return;
+        }
+
+        $.ajax({
+            url:"{:url('del_article_tag')}?article_id={$data.article_id}",
+            type:'post',
+            dataType:'json',
+            data:{r_id:r_id,tag_id:tag_id},
+            success:function(res){
+                if (res.code == 200) {
+                    window.location.href="{:url('edit_article_tags')}?id={$data.article_id}";
+                } else {
+                    wk.error(res.msg);
+                    return false;
+                }
+            }
+        })
+
+
+    }
+
+    $('#add_tags').click(function (){
+        var tags = $('#tags').val();
+
+        $.ajax({
+            url:"{:url('edit_article_tags')}?article_id={$data.article_id}",
+            type:'post',
+            dataType:'json',
+            data: {tags:tags},
+            success:function(res){
+                if (res.code == 200) {
+                    window.location.href="{:url('edit_article_tags')}?id={$data.article_id}";
+                } else {
+                    wk.error(res.msg);
+                    return false;
+                }
+            }
+        })
+
+    });
+
+
+</script>
+</body>
+</html>

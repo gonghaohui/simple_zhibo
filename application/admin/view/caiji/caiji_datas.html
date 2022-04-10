@@ -1,0 +1,96 @@
+{include file="public/header" /}
+<body class="gray-bg">
+<div class="layui-fluid layui-col-md12">
+    <div class="layui-card">
+
+        <div class="layui-card-header">
+            <a style="background: #1E9FFF;padding: 5px 15px;color: #ffffff;" href="javascript:history.go(-1);">返回</a>
+        </div>
+        <div class="layui-card-header">采集数据</div>
+        <div class="layui-card-body layui-form">
+            <div class="layui-row layui-col-space10 layui-form-item ">
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>采集网站</label>
+                    <div class="layui-input-block">
+                        <select name="web_type" id="web_type" lay-verify="required">
+                            <option value="">选择采集网站</option>
+                            {if !empty($sites)}
+                            {foreach name="$sites" item="vo" key="k"}
+                            <option value="{$vo.web_type}">{$vo.name}--{$vo.site}</option>
+                            {/foreach}
+                            {/if}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>文章分类</label>
+                    <div class="layui-input-block">
+                        <select name="category" id="category" lay-verify="required">
+                            <option value="">请选择文章分类</option>
+                            {if !empty($AllCategories)}
+                            {foreach name="$AllCategories" item="vo"}
+                            <option value="{$vo.category_id}">{$vo.placeholder}{$vo.category_name_cn}</option>
+                            {/foreach}
+                            {/if}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <label class="layui-form-label"><em>*</em>采集url(列表url)</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input " name="url" lay-verify="required" placeholder="采集url(列表url)">
+                    </div>
+                </div>
+
+
+
+                <div class="layui-form-item layui-col-md-offset1 layui-col-md8">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="component-form-element">采集
+                        </button>
+                        <button class="layui-btn layui-btn-primary" onclick="history.back()">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+
+
+<script>
+    layui.use(['form','upload','layedit','element'], function() {
+        var form = layui.form
+
+        form.on('submit(component-form-element)', function (data) {
+            // var web_type = $('#web_type option:selected').val();
+            // alert(web_type);return;
+            $('.layui-btn').addClass('layui-disabled').attr('disabled','disabled');
+            $.ajax({
+                url:"{:url('caiji_datas')}",
+                type:'post',
+                dataType:'json',
+                data:data.field,
+                success:function(res){
+                    if (res.code == 200) {
+                        layer.msg(res.msg,{icon:1,time:1500,shade:0.1},function(index){
+                            // wk.layer_close();
+                            window.location.href="{:url('data_list')}";
+                        })
+                    } else {
+                        $(".layui-btn").removeClass('layui-disabled').removeAttr('disabled');
+                        wk.error(res.msg);
+                        return false;
+                    }
+                }
+            })
+        });
+    });
+
+
+</script>
+</body>
+</html>

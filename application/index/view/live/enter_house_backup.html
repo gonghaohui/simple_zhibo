@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>输入密码，进入直播间</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-cn"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <link rel="icon" type="image/x-icon" href="__PC_IMG__/icon/favicon32.ico">
+
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/bootstrap.css?ver=1.01" >
+
+
+
+
+
+
+
+    <script type="text/javascript" src="__PC_JS__/jquery.min.js"></script>
+</head>
+<body>
+
+<div style="margin-top: 100px;">
+    请输入{$lid}号房间密码<input id="pwd" type="password">
+    <input id="enter_house" type="button" value="进入">
+
+</div>
+
+
+<script>
+    var userSign = localStorage.getItem('zhibo_sign');
+    if(!userSign){
+        //自动创建用户
+        $.ajax({
+            type: "POST",
+            url: "/live/auto_create_new_user",
+            data: {},
+            dataType: "json",
+            error: function () {
+                layer.alert("error");
+            },
+            success: function (data) {
+                if(data.code == 200){
+                    localStorage.setItem('zhibo_sign',data.sign);
+                }
+            }
+        });
+    }
+
+    $("#enter_house").click(function () {
+        let pwd = $("#pwd").val();
+        if(pwd == ''){
+            alert("请输入密码");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/live/check_house_pwd",
+            data: {pwd:pwd,lid:{$lid}},
+            dataType: "json",
+            error: function () {
+                layer.alert("error");
+            },
+            success: function (data) {
+                if(data.code == 200){
+                    sessionStorage.setItem('zhibo_house_right',data.lid);
+                    location.href = "/live/"+data.lid+".html";
+                }else{
+                    alert(data.info);
+                }
+            }
+        });
+    });
+
+</script>
+
+
+</body>
+</html>

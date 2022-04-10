@@ -1,0 +1,171 @@
+#header{
+    position: fixed;
+    background-color:#fff;
+    left:0;
+    top:0;
+    line-height:56px;
+    z-index:99;
+    width: 100%;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    -moz-backface-visibility:hidden;
+    -ms-backface-visibility:hidden;
+    -webkit-box-shadow: 1px 1px 1px #eee;
+    -moz-box-shadow: 1px 1px 1px #eee;
+    -ms-box-shadow: 1px 1px 1px #eee;
+    -o-box-shadow: 1px 1px 1px #eee;
+    box-shadow: 1px 1px 1px #eee;
+}
+.header-nav{
+    /*position: fixed;*/
+    background-color: #fff;
+    z-index: 99;
+}
+@media screen and (min-width : 1251px) and (max-width : 1500px){
+    #header{
+        position : static;
+    }
+}
+#header #header-logo{
+    float: left;
+    position: relative;
+    background: url('../images/header_logo_pc.png') no-repeat;
+    width: 86px;
+    line-height: 18px;
+    height: 56px;
+    background-position: left center;
+    margin-left: 20px;
+}
+@media screen and (max-width : 768px){
+    #header #header-logo{
+        float: left;
+        position: relative;
+        background: url('/img/newlive/bugbank_login@2x.png') no-repeat;
+        width: 26px;
+        line-height: 18px;
+        height: 56px;
+        background-position: left center;
+        margin-left: 20px;
+        background-size: contain;
+    }
+}
+#header .header-divide{
+    float: left;
+    font-size:18px;
+    margin:0 12px;
+    color:#D7D7D7;
+    line-height: 18px;
+    margin-top: 17px;
+}
+#header .header-live{
+    min-height:56px;
+    clear:both;
+}
+#header .header-menu-left{
+    float: left;
+    height: 56px;
+    font-family: "Microsoft YaHei",Arial, "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+}
+#header .header-menu-left .live-room{
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    width: 111px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 4px;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+    font-weight: bold;
+}
+#header .header-menu-left .live-room img {
+    width: 100%;
+    position: relative;
+    bottom: 2px;
+}
+#header .header-menu-left .live-room-pc{
+    width: 111px;
+}
+#header .header-menu-left .live-room-mobile{
+    width: 61px;
+    display: none;
+}
+@media screen and (max-width : 768px){
+    #header .header-menu-left .live-room-pc{
+        display: none;
+    }
+}
+@media screen and (max-width : 768px){
+    #header .header-menu-left .live-room-mobile{
+        display: inline-block;
+        height: 26px;
+        line-height: 26px;
+        width: 80px;
+        color: #fff;
+        font-size: 12px;
+        text-align: center;
+        border-radius: 4px;
+        -moz-user-select:none;
+        -webkit-user-select:none;
+        user-select:none;
+        font-weight: bold;
+    }
+    #header .header-menu-left .live-room-mobile img {
+        width: 100%;
+        position: relative;
+        bottom: 2px;
+    }
+}
+#header .header-menu-right{
+    float: right;
+    height: 56px;
+    margin-right: 25px;
+    font-family: "Microsoft YaHei",Arial, "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+}
+#header .header-menu-right .user-avatar{
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    cursor: pointer;
+}
+#header .header-menu-right .user-avatar .user-img{
+    width: 28px;
+    height: 28px;
+    border-radius: 100%;
+    vertical-align: top;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+}
+#header .user-avatar .user-name{
+    margin:0 10px;
+    font-size:14px;
+    color:#999;
+}
+#header .header-menu-right .user-login{
+    font-size:14px;
+    color:#999;
+    cursor: pointer;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+}
+
+.fixedbar{
+    height: 52px!important;
+}
+.banner#banner{
+    height: 80px;
+    background: #000;
+    /* background-image: url(/img/newlive/banner.jpg); */
+    background-position: center -45px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+@media screen and (max-width: 1365px){
+    .banner#banner{
+        height: 70px;
+    }
+}

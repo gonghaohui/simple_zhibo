@@ -1,0 +1,310 @@
+
+@media screen and (min-width: 1250px)  {
+    .main .tag {
+        position: absolute;
+        /* bottom: 0; */
+    }
+}
+@media screen and (min-width: 1500px){
+    .live-subject{
+        width: 1450px;
+    }
+    .live-platform .main {
+        position: relative;
+        float: left;
+        width: 100%;
+        height: 100%;
+
+    }
+    .live-platform .main .tag {
+        margin-bottom: 30px;
+    }
+    .live-subject .rooms-wrap .room-list .swiper-container .swiper-wrapper {
+        max-height: 516px;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 1500px) and (min-width: 1250px){
+    .live-subject {
+        width: calc(100% - 50px);
+        max-width: 1450px;
+    }
+    .live-platform .main {
+        position: relative;
+        float: left;
+        width: 100%;
+        height: 100%;
+
+    }
+    .live-platform .main .tag {
+        margin-bottom: 30px;
+    }
+
+}
+@media (max-width: 1365px) and (min-width: 1250px){
+    .live-subject {
+        width: 1188px;
+    }
+    .live-platform .main {
+        position: relative;
+        float: left;
+        width: 75%;
+        height: 100%;
+
+    }
+    .live-platform .main .tag {
+        margin-bottom: 30px;
+    }
+    .live-subject .rooms-wrap .room-list .swiper-container .swiper-wrapper {
+        max-height: 510px;
+        overflow: hidden;
+    }
+    .col-lg-2 {
+        width: 18.666667%;
+    }
+}
+
+@media screen and (max-width: 1250px){
+    .live-subject  {
+        max-width: 1000px;
+    }
+    .live-platform .main {
+        position: relative;
+        /* float: left; */
+        width: 100%;
+        height: 100%;
+
+    }
+    .live-platform .main .tag {
+        margin-bottom: 30px;
+        margin-top: 30px;
+    }
+    .live-subject .rooms-wrap .room-list .swiper-container .swiper-wrapper {
+        max-height: 446px;
+        overflow: hidden;
+    }
+
+}
+
+@media (min-width: 992px) and (max-width: 1250px) {
+    .live-subject {
+        width: 920px;
+    }
+    .recommendvideo {
+        width: calc(100% - 50px);
+    }
+    .live-platform .main .tag {
+        margin-bottom: 70px;
+    }
+}
+@media screen and (min-width: 768px) and  (max-width: 992px) {
+    .live-subject {
+        width: 750px;
+    }
+    .live-platform .main .tag {
+        margin-bottom: 70px;
+    }
+}
+@media screen and (max-width: 768px){
+    .recommendvideo {
+        display: none;
+    }
+    .live-platform .main .tag {
+        display: none !important;
+    }
+}
+
+.live-platform .view {
+    background: #000;
+    position: relative
+}
+
+.live-platform .main .tag {
+    margin-top: 5px;
+    color: #898A8D;
+    padding: 15px 9px 5px 10px;
+    width: 100%;
+    line-height: 47px;
+    display: none;
+}
+
+.live-platform .main  .tag span {
+    float: left;
+    height: 30px;
+    font-size: 14px;
+}
+
+.live-platform .main  .tag ul {
+    width: 90%;
+    height: auto;
+    margin-left: 30px;
+    font-size: 12px;
+}
+
+.live-platform .main  .tag ul li {
+    float: left;
+    margin-left: 10px;
+    height: 20px;
+    padding: 1px 15px;
+    background-color: #24272B;
+    border-radius: 10px;
+    margin-top: 14px;
+}
+.live-platform .main  .tag ul li p {
+    margin-top: -14px;
+}
+
+/* 鎺ㄨ崘鍒楄〃 */
+
+.recommendvideo {
+    padding-bottom: 50px;
+    z-index: 1;
+    margin-top: 70px;
+}
+
+.recommendvideo .live-subject {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.live-subject h3 {
+    border-bottom: solid #ccc 1px;
+    padding-bottom: 4px;
+}
+
+.live-subject h3 span {
+    border-bottom: solid #ffaa07 3px;
+    font-size: 20px
+}
+
+.live-subject .rooms-wrap {
+    height: auto;
+}
+
+.live-subject .rooms-wrap .room-list {
+    width: 100%;
+    height: auto;
+}
+
+.live-subject .rooms-wrap .room-list .swiper-slide {
+    margin-bottom: 35px;
+
+}
+.live-subject .rooms-wrap .room-list .swiper-slide .room-video-info span {
+    margin-right: 10px;
+    margin-left: 5px;
+}
+.live-subject .rooms-wrap .room-list .swiper-slide .room-banner {
+    background-position: center center;
+}
+.room-list .room-banner {
+    position: relative;
+    width: 100%;
+    height: 118px;
+    background-image: url(/img/newlive/home/banner_daka2.jpg);
+    background-size: cover;
+}
+.room-list .room-video-info i {
+    font-size: 18px;
+}
+
+.live-container .live-subject .rooms-wrap .room-list .swiper-slide .room-banner {
+    background-position: center center;
+}
+
+.room-list .room-banner {
+    position: relative;
+    width: 100%;
+    height: 118px;
+    background-image: url(/img/newlive/home/banner_daka2.jpg);
+    background-size: cover;
+}
+
+.live-subject .rooms-wrap .room-list .swiper-container .swiper-wrapper {
+    padding-top: 40px;
+}
+
+.room-list .banner-mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(1, 1, 1, 0.5);
+    opacity: 0;
+    filter: alpha(opacity=0);
+    transition: opacity .3s ease-in-out;
+}
+
+.live-subject .rooms-wrap .room-list .banner-mask a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 30px;
+}
+
+.room-list .room-banner:hover .banner-mask {
+    opacity: 1;
+}
+
+.room-list .banner-mask i {
+    display: inline-block;
+    margin-top: 40px;
+}
+
+.room-list .room-title {
+    margin-top: 10px;
+    line-height: 19px;
+    font-size: 14px;
+    font-weight: bold;
+    max-height: 38px;
+    height: 38px;
+}
+.room-list .room-title a {
+    color: #707070;
+}
+.room-list .room-author {
+    margin-top: 2px;
+    line-height: 18px;
+    font-size: 13px;
+}
+.room-list .room-author a {
+    color: #707070;
+}
+
+.room-list .room-video-info {
+    position: relative;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    width: fit-content;
+    margin-top: -1px;
+    color: #707070;
+}
+
+.room-list .room-style a {
+    display: inline-block;
+    height: 19px;
+    width: 59px;
+    border: 1px solid #E62117;
+    border-radius: 2px;
+    color: #E62117;
+    text-align: center;
+}
+
+.room-list .room-banner .room-duration {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    width: 64px;
+    height: 20px;
+    line-height: 22px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background: #111;
+    color: #fff;
+    text-align: center;
+}
+

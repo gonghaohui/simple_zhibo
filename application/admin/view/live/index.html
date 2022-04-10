@@ -1,0 +1,132 @@
+{include file="public/header" /}
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+            <div class="layui-form-item">
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" id="lid" class="layui-input" name="lid" placeholder="房间号" autocomplete="off">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" id="live_name" class="layui-input" name="live_name" placeholder="房间名"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <select name="status" id="status" class="layui-input">
+                            <option value="" selected="selected">直播间状态</option>
+                            <option value="0">已关闭</option>
+                            <option value="1">已启用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" lay-submit="" lay-filter="LAY-search">立即搜索</button>
+                        <button  class="layui-btn layui-btn-normal" id="empty"  lay-submit="" lay-filter="LAY-search">重置</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="layui-btn" data-type="add" onclick="wk.layer_show('添加直播间','{:url('liveHouseAdd')}')">
+                    <i class="fa fa-plus"></i> 添加直播间
+                </button>
+            </div>
+
+        </div>
+
+        <div class="layui-card-body">
+            <table id="LAY-table-manage" lay-filter="LAY-table-manage"></table>
+            <!--类型模板-->
+
+            <!--状态模板-->
+            <script type="text/html" id="staBar">
+                <input type="checkbox" value="{{d.lid}}"  lay-skin="switch"  lay-text="ON|OFF" lay-filter="OnOff"{{ d.status == 1 ? 'checked' : '' }} >
+            </script>
+
+            <!--操作模板-->
+            <script type="text/html" id="opeBar">
+                <a class="layui-btn layui-btn-xs" title="编辑" onclick="wk.layer_show('修改直播间','{:url('edit_house')}?id={{d.lid}}')"><i class="fa fa-pencil"></i></a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" id="del_{{d.lid}}" title="删除" onclick="del_house({{d.lid}})"><i class="fa fa-trash-o"></i></a>
+            </script>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+<script>
+    layui.use(['index', 'table','util'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+            , util = layui.util
+        //固定块
+        util.fixbar({
+            css: {right: 20, bottom: 50}
+            ,bgcolor: '#393D49'
+        });
+        table.render({
+            elem: '#LAY-table-manage'
+            , url: '{:url("live/index")}'
+            ,response: {
+                statusCode: 220 //成功的状态码，默认：0
+            }
+            , page: true
+            , even: false //开启隔行背景
+            , size: 'lg' //sm小尺寸的表格 lg大尺寸
+            // ,width:100
+            , autoSort: false
+            , cellMinWidth: 150
+            , limits: [10, 20, 30, 40, 50]
+            , limit: "50"
+            // , height: "full-220"
+            , loading: true
+            , id: 'LAY-table'
+            , cols: [[
+                {field:'lid', width: 80, title: '房间号', align: 'center'}
+                , {field: 'live_name', width: '' ,title: '房间名', align: 'left'}
+                , {field: 'live_source', width: '' ,title: '直播源地址', align: 'left'}
+                , {field: 'live_pwd', width: '' ,title: '房间密码', align: 'left'}
+                , {field: 'create_time', width: 160, title: '创建时间', align: 'center'}
+                , {field: 'status',fixed: 'right', width: 100, title: '房间状态', align: 'center', templet: '#staBar'},
+                {fixed: 'right', width: 130, title: '操作', align: 'center', toolbar: '#opeBar'}
+            ]]
+            ,done: function (res, curr, count) {
+                $('th').children().prop('align','center');
+            }
+        });
+        //监听状态开关操作
+        form.on('switch(OnOff)', function (obj) {
+            var num = '';
+            obj.elem.checked == true? num = 1: num = 0;
+            //角色状态
+            wk.status(this.value,num, '{:url("live_house_state")}',obj);
+        });
+
+
+    });
+
+    /**
+     * [del_word 删除禁词]
+     */
+    function del_house(id){
+        layer.confirm('确认删除该房间吗?', {icon: 7, title:'警告'}, function(index){
+            //do something
+            $.getJSON('{:url("del_house")}', {'id' : id}, function(res){
+                if(res.code == 200){
+                    wk.success(res.msg,"layui.table.reload('LAY-table');")
+                }else if(res.code == 100){
+                    wk.error(res.msg,"layui.table.reload('LAY-table');");
+                }
+            });
+            layer.close(index);
+        })
+    }
+
+</script>
+</body>
+</html>

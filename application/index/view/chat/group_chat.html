@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui">
+    <meta name="referrer" content="no-referrer">
+    <title>group_chat_{$room}</title>
+
+    <script type="text/javascript" src="__PC_JS__/jquery.min.js"></script>
+
+
+    <style type="text/css">
+        html, body {width:100%;height:100%;margin:auto;overflow: hidden;}
+    </style>
+</head>
+<body>
+<div>在线人数:<em id="count" style="color:red;">0</em></div>
+<div id="content" style="border: 1px solid black;width:500px;height: 300px;">
+
+</div>
+<input id="msg" type="text"><input id="send" type="button" value="发送">
+<script>
+    var ws = new WebSocket("ws://127.0.0.1:8282");
+    var room = '{$room}';
+    ws.onmessage = function (e) {
+        // console.log(e);
+        // return;
+        let message = JSON.parse(e.data);
+        switch(message.type){
+            case "text":
+                $("#count").text(message.count);
+                if(message.data != ''){
+                    $("#content").append('<p>'+message.data+'</p>');
+                }
+                return;
+        }
+    }
+
+    $("#send").click(function () {
+
+        let text = $("#msg").val();
+        if(text == ''){
+            return;
+        }
+        let message = '{"data":"'+text+'","type":"say","group":"'+room+'"}';
+        ws.send(message);
+    });
+
+
+
+</script>
+</body>
+</html>

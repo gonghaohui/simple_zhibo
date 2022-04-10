@@ -1,0 +1,62 @@
+{include file="public/header" /}
+<body>
+<style>
+    .layui-btn{
+        margin-bottom: 20px !important;
+    }
+    .layui-btn+.layui-btn{
+        margin-left: 0px !important;
+        /*margin-right: 15px !important;*/
+    }
+    .layui-btn .layui-btn{
+        margin-right: 15px !important;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+            <div>
+                <button class="layui-btn" data-type="add" onclick="create_sort(0)">
+                    <i class="fa fa-plus"></i> 生成全站文章排序(访问量大到小)
+                </button>
+                <button class="layui-btn" data-type="add" onclick="create_sort(1)">
+                    <i class="fa fa-plus"></i> 生成一级分类文章排序(访问量大到小)
+                </button>
+                <button class="layui-btn" data-type="add" onclick="create_sort(2)">
+                    <i class="fa fa-plus"></i> 生成二级级分类文章排序(访问量大到小)
+                </button>
+                <button class="layui-btn" data-type="add" onclick="create_sort(3)" style="display: none;">
+                    <i class="fa fa-plus"></i> 生成三级分类文章排序(访问量大到小)
+                </button>
+                <button class="layui-btn" data-type="add" onclick="create_sort(4)">
+                    <i class="fa fa-plus"></i> 生成热门标签排序(访问量大到小)
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{include file="public/footer" /}
+<script>
+    function create_sort(type){
+        var num = 10;
+        var tagNum = 40;
+        $.ajax({
+            type: 'post',
+            url: '{:url("sort")}',
+            data: { type: type,num:num,tagNum:tagNum},
+            dataType: 'json',
+            success: function (data) {
+                if(data.code == 200){
+                    wk.success(data.msg)
+                }else if(data.code == 100){
+                    wk.error(data.msg);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

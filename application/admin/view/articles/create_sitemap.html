@@ -1,0 +1,48 @@
+{include file="public/header" /}
+<body>
+<style>
+    .layui-btn{
+        margin-bottom: 20px !important;
+    }
+    .layui-btn+.layui-btn{
+        margin-left: 0px !important;
+        /*margin-right: 15px !important;*/
+    }
+    .layui-btn .layui-btn{
+        margin-right: 15px !important;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+            <div>
+                <button class="layui-btn" data-type="add" onclick="create_sitemap()">
+                    <i class="fa fa-plus"></i> 生成最新的网站地址sitemap.xml
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{include file="public/footer" /}
+<script>
+    function create_sitemap(){
+        $.ajax({
+            type: 'post',
+            url: '{:url("create_sitemap")}',
+            data: {},
+            dataType: 'json',
+            success: function (data) {
+                if(data.code == 200){
+                    wk.success(data.msg)
+                }else if(data.code == 100){
+                    wk.error(data.msg);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
