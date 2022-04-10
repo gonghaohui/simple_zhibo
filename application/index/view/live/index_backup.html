@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{$data['lid']}号直播房间</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-cn"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <link rel="icon" type="image/x-icon" href="__PC_IMG__/icon/favicon32.ico">
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/bootstrap.css?ver=1.01" >
+    <!--<link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/font-awesome.min.css?ver=1.01" >-->
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/common.css?ver=1.01" >
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/index.css?ver=1.02" >
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/danmaku.css?ver=1.01" >
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/chat.css?ver=1.01" >
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/skins/index.css?ver=1.01" >
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/live_win.css?ver=1.01" >
+    <!--<link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/pay.css?ver=1.01" >-->
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/tag_recommend.css?ver=1.02" >
+
+
+
+    <script type="text/javascript" src="__PC_JS__/jquery.min.js"></script>
+    <script>
+        var enter_right = sessionStorage.getItem('zhibo_house_right');
+        var lid = {$lid};
+        if(!enter_right){
+            //没有进入该房间的权限，跳出
+            location.href = '/live/enter_house?lid='+lid;
+        }else{
+            //验证该房间是否可以进入
+            if(lid != enter_right){
+                location.href = '/live/enter_house?lid='+lid;
+            }
+
+
+        }
+    </script>
+
+    <style>
+        .main{
+            z-Index: 999;
+        }
+        #modal{
+            display: none;
+            position: absolute;
+            background-color: white;
+            width: 100%;
+            height: 100%;
+            z-Index: 9999;
+        }
+        .modal_status{
+            text-align: center;
+            padding-top: 20%;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<!-- header -->
+<section class="header" id="header">
+    <!-- live3-header1.0 布局 -->
+    <nav class='header-nav'>
+        <a id='header-logo' class='header-logo' href="#"></a>
+        <span class='header-divide'>&#124;</span>
+
+    </nav>
+</section>
+<div class="fixedbar"></div>
+<div class="banner" id="banner" style="background-image: url('/static/pc/images/live_banner.jpg');"></div>
+<!-- header -->
+
+<div class="live-container style-default" id="live_container">
+    <div class="live-platform container">
+        <div class="main">
+            <div class="left view" id="left_view">
+                <div class="view-title" id="view_title">
+                    <div class="title-info">
+                        <div class="title-text style-default" id="title_text">
+                        </div>
+                        <div class="guest-info">
+
+                            直播：{$data.live_name}
+                            <span class="guest-name" id="guest_name"></span>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--遮罩层-->
+                <div id="modal">
+                    <div class="modal_status">该直播已关闭</div>
+                </div>
+
+
+                <script src="//cdn.jsdelivr.net/npm/xgplayer/browser/index.js" charset="utf-8"></script>
+                <script src="//cdn.jsdelivr.net/npm/xgplayer-flv.js/browser/index.js" charset="utf-8"></script>
+                <div id="J_prismPlayer" class="prism-player">
+                    <div id="mse"></div>
+                </div>
+                <script>
+                    var player = new FlvJsPlayer({
+                        "id": "mse",
+                        "playsinline": true,
+                        "url": "{$data.live_source}",
+                        "width": '100%',
+                        "height": '100%',
+                        "autoplay": true,
+                        "isLive" : true
+                    });
+                    // player.src = '';
+
+                </script>
+
+            </div>
+            <!-- 标签 -->
+
+        </div>
+
+    </div>
+</div>
+<section class="footer" id="footer">
+    <div class='copyRight'>
+        <p class='copyRight-content container live-footer'>&copy; 2022 直播间</p>
+    </div>
+</section>
+
+<script>
+
+    var myFunction = function() {
+
+        $.ajax({
+            type: "POST",
+            url: "/live/check_zhibo_status",
+            data: {lid:{$lid}},
+            dataType: "json",
+            error: function () {
+                // layer.alert("error");
+            },
+            success: function (data) {
+                if(data.code == 300){
+                    //直播已关闭
+                    $("#modal").css("display",'block');
+                }
+                if(data.code == 200){
+                    //正在直播当中
+                    $("#modal").css("display",'none');
+                }
+            }
+        });
+
+
+    };
+
+    myFunction();
+
+
+    setInterval(myFunction, 60000);
+
+
+</script>
+
+
+
+
+</body>
+
+</html>
