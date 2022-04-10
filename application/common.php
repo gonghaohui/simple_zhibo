@@ -692,7 +692,8 @@ function get_ip_area($ip){
     if($arr['code'] == 1){
         return '';
     }else{
-        return $arr['data']['country'].$arr['data']['region'].$arr['data']['city'].$arr['data']['isp'];
+//        return $arr['data']['country'].$arr['data']['region'].$arr['data']['city'].$arr['data']['isp'];
+        return '';
     }
 
 
