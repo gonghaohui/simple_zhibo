@@ -17,13 +17,16 @@
     }
 </style>
 <div>
-    <video id='myvideo' width=960 height=540 class="video-js vjs-default-skin" controls>
+    <video id='myvideo' width=960 height=540 class="video-js vjs-default-skin" controls muted>
         <!-- hls直播源地址：CCTV1高清 -->
-        <source src="http://vlc.04xr.cn/psv/live101.m3u8">
+        <source src="https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8" type="application/x-mpegURL">
     </video>
     <script>
-        var player = videojs('myvideo', {}, function () { console.log('videojs播放器初始化成功') })
+        var player = videojs('myvideo', {autoplay:true}, function () { console.log('videojs播放器初始化成功') });
         player.play();
+        // setTimeout(()=>{
+        //     player.play();
+        // },1000);
     </script>
 </div>
 </body>
