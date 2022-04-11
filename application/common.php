@@ -764,3 +764,18 @@ function strip_sql($string) {
     );
     return is_array($string) ? array_map('strip_sql', $string) : preg_replace($pattern_arr, $replace_arr, $string);
 }
+
+function create_code($url,$level='L',$size=4){
+    require_once EXTEND_PATH.'org/phpqrcode.php';
+    // 容错级别
+    $errorCorrectionLevel = $level;
+    // 生成图片大小
+    $matrixPointSize = intval($size);
+    // 生成二维码图片
+    $object = new \QRcode();
+    // 这个一定要加上，清除缓冲区
+    ob_end_clean();
+    // 第二个参数false的意思是不生成图片文件，如果你写上‘picture.png’则会在根目录下生成一个png格式的图片文件
+    $object->png($url, false, $errorCorrectionLevel, $matrixPointSize, 2);
+
+}

@@ -12,11 +12,6 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <div class="layui-input-inline">
-                        <input type="text" id="live_name" class="layui-input" name="live_name" placeholder="房间名"/>
-                    </div>
-                </div>
-                <div class="layui-inline">
                     <div class="layui-input-inline" style="width: 100px;">
                         <select name="status" id="status" class="layui-input">
                             <option value="" selected="selected">直播间状态</option>
@@ -31,12 +26,27 @@
                         <button  class="layui-btn layui-btn-normal" id="empty"  lay-submit="" lay-filter="LAY-search">重置</button>
                     </div>
                 </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline" style="width: 260px;">
+                        <input type="text" id="website" class="layui-input" name="website" value="{$website}" placeholder="网站域名"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn layui-btn-danger" id="change_domain">修改域名</button>
+                    </div>
+                </div>
+
             </div>
             <div>
                 <button class="layui-btn" data-type="add" onclick="wk.layer_show('添加直播间','{:url('liveHouseAdd')}')">
                     <i class="fa fa-plus"></i> 添加直播间
                 </button>
             </div>
+
+
+
 
         </div>
 
@@ -51,6 +61,7 @@
 
             <!--操作模板-->
             <script type="text/html" id="opeBar">
+                <a class="layui-btn layui-btn-info layui-btn-xs" title="查看二维码" onclick="wk.layer_show('查看{{d.lid}}号房间二维码','{:url('show_code_png')}?lid={{d.lid}}','','true')"><i class="fa fa-picture-o"></i></a>
                 <a class="layui-btn layui-btn-xs" title="编辑" onclick="wk.layer_show('修改直播间','{:url('edit_house')}?id={{d.lid}}')"><i class="fa fa-pencil"></i></a>
                 <a class="layui-btn layui-btn-danger layui-btn-xs" id="del_{{d.lid}}" title="删除" onclick="del_house({{d.lid}})"><i class="fa fa-trash-o"></i></a>
             </script>
@@ -82,7 +93,7 @@
             , autoSort: false
             , cellMinWidth: 150
             , limits: [10, 20, 30, 40, 50]
-            , limit: "50"
+            , limit: "10"
             // , height: "full-220"
             , loading: true
             , id: 'LAY-table'
@@ -92,7 +103,6 @@
                 , {field: 'live_source', width: '' ,title: '直播源地址', align: 'center'}
                 , {field: 'live_pwd', width: 120, title: '房间密码', align: 'center'}
 				, {field: 'live_link', width: '' ,title: '观看地址', align: 'center'}
-				, {field: 'live_code', width: 180, title: '二维码', align: 'center'}
                 , {field: 'create_time', width: 160, title: '创建时间', align: 'center'}
                 , {field: 'status',fixed: 'right', width: 100, title: '房间状态', align: 'center', templet: '#staBar'},
                 {fixed: 'right', width: 130, title: '操作', align: 'center', toolbar: '#opeBar'}
@@ -129,6 +139,16 @@
         })
     }
 
+    $("#change_domain").click(function () {
+        var domain = $("#website").val();
+        $.getJSON('{:url("edit_domain")}', {'domain' : domain}, function(res){
+            if(res.code == 200){
+                wk.success(res.msg,"layui.table.reload('LAY-table');")
+            }else if(res.code == 100){
+                wk.error(res.msg,"layui.table.reload('LAY-table');");
+            }
+        });
+    });
 </script>
 </body>
 </html>

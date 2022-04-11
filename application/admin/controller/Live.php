@@ -13,14 +13,12 @@ class Live extends Base
      * 直播房间列表
      */
     public function index(){
+        $web = Db::name('website')->find(1);
         if(request()->isAjax ()){
             extract(input());
             $map = [];
             if(isset($lid) && $lid!=""){
                 $map['lid'] = $lid;
-            }
-            if(isset($live_name)&&$live_name!=""){
-                $map['live_name'] = ['like',"%" . $live_name . "%"];
             }
             if(isset($status) && $status!=""){
                 $map['status'] = $status;
@@ -33,11 +31,46 @@ class Live extends Base
             $lists = $liveHouseModel->getDatasByWhere($map, $Nowpage, $limits,$od);
 //            print_r($lists);
 
+            foreach ($lists as $key => $item){
+                $lists[$key]['live_link'] = $web['website'].'/live/'.$item['lid'].'.html';
+            }
+//            print_r($lists);exit;
             return json(['code'=>220,'msg'=>'','count'=>$count,'data'=>$lists]);
         }
+        $this->assign('website',$web['website']);
         return $this->fetch("live/index");
 
 
+    }
+
+    /**
+     * 展示二维码
+     */
+    public function show_code_png(){
+        $lid = input('lid');
+        $web = Db::name('website')->find(1);
+        $url = $web['website'].'/live/'.$lid.'.html';
+        create_code($url,'',10);
+    }
+
+    /**
+     * 修改前端域名
+     */
+    public function edit_domain(){
+        if(request()->isAjax()){
+            $domain = input('domain');
+            if($domain == ''){
+                return json(['code' => 100, 'msg' => '域名不能为空']);
+            }
+            $res = Db::name('website')->where('id',1)->update([
+                'website' => $domain
+            ]);
+            if($res){
+                return json(['code' => 200, 'msg' => '域名修改成功']);
+            }else{
+                return json(['code' => 100, 'msg' => 'Error']);
+            }
+        }
     }
 
     /**
