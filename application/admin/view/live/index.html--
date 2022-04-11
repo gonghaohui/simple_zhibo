@@ -88,11 +88,9 @@
             , id: 'LAY-table'
             , cols: [[
                 {field:'lid', width: 80, title: '房间号', align: 'center'}
-                , {field: 'live_name', width: 200, title: '房间名', align: 'center'}
-                , {field: 'live_source', width: '' ,title: '直播源地址', align: 'center'}
-                , {field: 'live_pwd', width: 120, title: '房间密码', align: 'center'}
-				, {field: 'live_link', width: '' ,title: '观看地址', align: 'center'}
-				, {field: 'live_code', width: 180, title: '二维码', align: 'center'}
+                , {field: 'live_name', width: '' ,title: '房间名', align: 'left'}
+                , {field: 'live_source', width: '' ,title: '直播源地址', align: 'left'}
+                , {field: 'live_pwd', width: '' ,title: '房间密码', align: 'left'}
                 , {field: 'create_time', width: 160, title: '创建时间', align: 'center'}
                 , {field: 'status',fixed: 'right', width: 100, title: '房间状态', align: 'center', templet: '#staBar'},
                 {fixed: 'right', width: 130, title: '操作', align: 'center', toolbar: '#opeBar'}

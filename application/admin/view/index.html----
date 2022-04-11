@@ -55,6 +55,7 @@
                     <dl class="layui-nav-child">
                         <!--<dd><a href="../src/views/set/user/info.html"><i class="fa fa-user-circle"></i> 基本资料</a></dd>-->
                         <dd><a href="javascript:;" onclick="wk.layer_show1('基本资料',$('#pInfo'),550,405)"><i class="fa fa-user-circle-o"></i> 基本资料</a></dd>
+                        <dd><a href="javascript:;" onclick="wk.layer_show1('修改头像',$('#headCrop'),700,570)"><i class="fa fa-crop"></i> 修改头像</a></dd>
                         <dd><a href="javascript:;" onclick="wk.layer_show1('修改密码',$('#changePwd'),500,320);"><i class="fa fa-unlock-alt"></i> 修改密码</a></dd>
                         <dd><a href="javascript:;" onclick="cache()"><i class="fa fa-history"></i> 清除缓存</a></dd>
                         <hr>
@@ -246,7 +247,7 @@
             //关闭裁剪框
             layer.closeAll();
             $.ajax({
-                url : "{:url('Upload/hahahahaha')}",
+                url : "{:url('Upload/updateFace')}",
                 type : "post",
                 dataType : "json",
                 data:"base64url="+base64url+"&id={:session('uid')}",
