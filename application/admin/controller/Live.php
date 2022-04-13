@@ -38,7 +38,11 @@ class Live extends Base
             $redis->connect('127.0.0.1',6379);
             foreach ($lists as $key => $item){
                 $lists[$key]['live_link'] = $web['website'].'/live/'.$item['lid'].'.html';
-                $lists[$key]['real_online'] = $redis->get('room_'.$item['lid'].'_user_online_num');
+                $real_online = $redis->get('room_'.$item['lid'].'_user_online_num');
+                if(!$real_online){
+                    $real_online =  1;
+                }
+                $lists[$key]['real_online'] = $real_online;
             }
 //            print_r($lists);exit;
             return json(['code'=>220,'msg'=>'','count'=>$count,'data'=>$lists]);
