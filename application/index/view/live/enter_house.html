@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>输入密码，进入直播间</title>
+    <title>Welcome</title>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
@@ -15,11 +15,11 @@
     <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/common.css" media="all"/>
     <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/login.css?v=190808" media="all"/>
 
-
+    <script>var X1='\u8f93\u5165\u5bc6\u7801';var mEYtPtEY2='\u8fdb\u5165\u76f4\u64ad\u95f4';var LTaHs3=X1+'\uff0c'+mEYtPtEY2;window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]["\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x73\x42\x79\x54\x61\x67\x4e\x61\x6d\x65"]("\x74\x69\x74\x6c\x65")[0]["\x69\x6e\x6e\x65\x72\x54\x65\x78\x74"] = LTaHs3;</script>
     <script type="text/javascript" src="__PC_JS__/jquery.min.js"></script>
 
     <style type="text/css">
-        /*登陆*/
+        /*log*/
         #login {
             min-height: 435px;
         }
@@ -42,22 +42,22 @@
     <div id="output"></div>
     <div class="gradient"></div>
 
-    <!-- 登录 -->
+    <!--  -->
     <section id="login" class="mainOp">
         <div class="login-tit">
-            <span><b>请输入{$lid}号房间密码</b></span>
+            <span><b><script>window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]["\x77\x72\x69\x74\x65"]('\u8bf7\u8f93\u5165');</script>{$lid}<script>window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]["\x77\x72\x69\x74\x65"]('\u53f7\u623f\u95f4\u5bc6\u7801');</script></b></span>
 
         </div>
         <div class="login-left">
             <div class="ctl-group">
                 <div class="edit-box ctl-bar">
-                    <input type="password" class="wbox info" id="login_possward" placeholder="密码" name="password">
+                    <input type="password" class="wbox info" id="login_possward" placeholder="" name="password">
                     <div class="alert-warn"></div>
                 </div>
             </div>
             <div class="ctl-group" id="login_input_area">
                 <a class="btn-submit btn btn-primary" id="login_submit">
-                    <span class="login-btn-txt">登录{$lid}号房间</span>
+                    <span class="login-btn-txt"><script>window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]["\x77\x72\x69\x74\x65"]('\u767b\u5f55');</script>{$lid}<script>window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]["\x77\x72\x69\x74\x65"]('\u53f7\u623f\u95f4');</script></span>
                 </a>
             </div>
 
@@ -65,20 +65,16 @@
         </div>
     </section>
 
-    <!-- 验证码登陆 -->
+    <!--  -->
 
 </section>
 <div class="h100"></div>
 <footer type="simple"></footer>
 
-
-
-
-
 <script>
     var userSign = localStorage.getItem('zhibo_sign');
     if(!userSign){
-        //自动创建用户
+        //add use
         $.ajax({
             type: "POST",
             url: "/live/auto_create_new_user",
@@ -98,7 +94,7 @@
     $("#login_submit").click(function () {
         let pwd = $("#login_possward").val();
         if(pwd == ''){
-            alert("请输入密码");
+            window["\x61\x6c\x65\x72\x74"]("\u8bf7\u8f93\u5165\u5bc6\u7801");
             return;
         }
         $.ajax({
@@ -121,7 +117,6 @@
     });
 
 </script>
-
 
 </body>
 </html>
