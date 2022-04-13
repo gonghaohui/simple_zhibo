@@ -5,6 +5,7 @@ use think\console\Input;
 use think\console\Output;
 use Redis;
 use think\Db;
+
 class Test extends Command
 {
     // 配置定时器的信息
