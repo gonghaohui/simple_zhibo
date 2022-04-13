@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <link rel="icon" type="image/x-icon" href="__PC_IMG__/icon/favicon32.ico">
     <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/bootstrap.css?ver=1.01" >
-    <!--<link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/font-awesome.min.css?ver=1.01" >-->
+    <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/font-awesome.min.css?ver=1.01" >
     <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/common.css?ver=1.01" >
     <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/index.css?ver=1.02" >
     <link rel="stylesheet" type="text/css" href="__PC_CSS__/zhibo/danmaku.css?ver=1.01" >
@@ -87,10 +87,14 @@
                         </div>
                         <div class="guest-info">
 
-                            直播：{$data.live_name}
-                            <span class="guest-name" id="guest_name"></span>
-
+                            直播：
+                            <span class="guest-name" id="guest_name">{$data.live_name}</span>
+                            <span class="banner-number-item" id="banner_watch">
+                            <i class="fa fa-eye person" title="在线人数"></i>
+                            <span class="person-count watch-person" id="banner_watch_num">1</span>
+                        </span>
                         </div>
+
                     </div>
                 </div>
 
@@ -163,6 +167,7 @@
                 if(data.code == 200){
                     //正在直播当中
                     $("#modal").css("display",'none');
+                    $("#banner_watch_num").text(data.online_num);
                 }
             }
         });

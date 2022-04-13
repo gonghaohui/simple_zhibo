@@ -8,7 +8,7 @@ return [
     // 应用命名空间
     'app_namespace'          => 'app',
     // 应用调试模式(排错)
-    'app_debug'              => false,
+    'app_debug'              => true,
     // 应用Trace(排错)
     'app_trace'              => false,
     // 应用模式状态
@@ -208,6 +208,7 @@ return [
         'prefix' => '',
         // 缓存有效期 0表示永久缓存
         'expire' => 0,
+
     ],
 
 

@@ -38,6 +38,17 @@
                     </div>
                 </div>
 
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" id="times" class="layui-input" name="times" value="{$times}" placeholder="真实在线人数倍数"/>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn layui-btn-danger" id="change_times">修改在线倍数</button>
+                    </div>
+                </div>
+
             </div>
             <div>
                 <button class="layui-btn" data-type="add" onclick="wk.layer_show('添加直播间','{:url('liveHouseAdd')}')">
@@ -103,7 +114,8 @@
                 , {field: 'live_source', width: '' ,title: '直播源地址', align: 'center'}
                 , {field: 'live_pwd', width: 120, title: '房间密码', align: 'center'}
 				, {field: 'live_link', width: '' ,title: '观看地址', align: 'center'}
-                , {field: 'create_time', width: 160, title: '创建时间', align: 'center'}
+                , {field: 'real_online', width: '' ,title: '真实在线人数', align: 'center'}
+                // , {field: 'create_time', width: 160, title: '创建时间', align: 'center'}
                 , {field: 'status',fixed: 'right', width: 100, title: '房间状态', align: 'center', templet: '#staBar'},
                 {fixed: 'right', width: 130, title: '操作', align: 'center', toolbar: '#opeBar'}
             ]]
@@ -142,6 +154,22 @@
     $("#change_domain").click(function () {
         var domain = $("#website").val();
         $.getJSON('{:url("edit_domain")}', {'domain' : domain}, function(res){
+            if(res.code == 200){
+                wk.success(res.msg,"layui.table.reload('LAY-table');")
+            }else if(res.code == 100){
+                wk.error(res.msg,"layui.table.reload('LAY-table');");
+            }
+        });
+    });
+
+    //change_times
+    $("#change_times").click(function () {
+        var times = $("#times").val();
+        if (!(/(^[1-9]\d*$)/.test(times))) {
+            wk.error("只能输入正整数","layui.table.reload('LAY-table');");
+            return false;
+        }
+        $.getJSON('{:url("edit_times")}', {'times' : times}, function(res){
             if(res.code == 200){
                 wk.success(res.msg,"layui.table.reload('LAY-table');")
             }else if(res.code == 100){

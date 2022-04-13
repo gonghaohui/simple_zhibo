@@ -4,7 +4,9 @@ namespace app\admin\controller;
 
 use app\admin\model\LiveForbiddenWordsModel;
 use app\admin\model\LiveHouseModel;
+use Redis;
 use think\Db;
+use think\Cache;
 
 class Live extends Base
 {
@@ -14,6 +16,7 @@ class Live extends Base
      */
     public function index(){
         $web = Db::name('website')->find(1);
+//        $times = Db::name('website')->find(2);
         if(request()->isAjax ()){
             extract(input());
             $map = [];
@@ -31,16 +34,36 @@ class Live extends Base
             $lists = $liveHouseModel->getDatasByWhere($map, $Nowpage, $limits,$od);
 //            print_r($lists);
 
+            $redis = new Redis();
+            $redis->connect('127.0.0.1',6379);
             foreach ($lists as $key => $item){
                 $lists[$key]['live_link'] = $web['website'].'/live/'.$item['lid'].'.html';
+                $lists[$key]['real_online'] = $redis->get('room_'.$item['lid'].'_user_online_num');
             }
 //            print_r($lists);exit;
             return json(['code'=>220,'msg'=>'','count'=>$count,'data'=>$lists]);
         }
         $this->assign('website',$web['website']);
+
+//        Cache('times',10);
+//        Cache::clear();
+        $times = Cache::get('times');
+        if(!$times){
+            $times = 1;
+        }
+        $this->assign('times',$times);
         return $this->fetch("live/index");
 
 
+    }
+
+    /**
+     * 修改前端显示的在线人数倍数
+     */
+    public function edit_times(){
+        $times = input('times');
+        Cache('times',$times);
+        return json(['code' => 200, 'msg' => '在线人数倍数修改成功']);
     }
 
     /**
@@ -89,12 +112,21 @@ class Live extends Base
     }
 
     /**
-     * [live_house_state 房间状态]
+     * [live_house_state 修改房间状态]
      */
     public function live_house_state(){
         extract(input());
         $liveHouseModel = new LiveHouseModel();
         $flag = $liveHouseModel->houseState($id,$num);
+
+        if($num == 0){
+            //当关闭该直播间，清空对应直播间在redis的在线用户记录
+            $redis = new Redis();
+            $redis->connect('127.0.0.1',6379);
+            $redis->zRemRangeByRank('room_'.$id,0,-1);
+//            $redis->zRem
+        }
+
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 

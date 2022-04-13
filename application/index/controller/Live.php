@@ -1,8 +1,9 @@
 <?php
 namespace app\index\controller;
 
+use Redis;
 use think\Db;
-
+use think\Cache;
 
 class Live extends PcBase
 {
@@ -24,6 +25,10 @@ class Live extends PcBase
         return $this->fetch('live/index');
     }
 
+    /**
+     * 输入密码进入房间
+     * @return mixed
+     */
     public function enter_house(){
         $lid = input('lid');
         if(!$lid){
@@ -39,47 +44,79 @@ class Live extends PcBase
         return $this->fetch('live/enter_house');
     }
 
+    /**
+     * 检验对应房间密码是否正确
+     * @return \think\response\Json
+     */
     public function check_house_pwd(){
-        $lid = input('lid',0);
-        $pwd = input('pwd');
-        $res = Db::name('live_house')->where('lid',$lid)->find();
-        if($lid == 0){
-            return json(['code'=>100,'info'=>'error']);
-        }
-        if(empty($res)){
-            return json(['code'=>100,'info'=>'没有该直播间']);
-        }
+        if(request()->isPost()){
+            $lid = input('lid',0);
+            $pwd = input('pwd');
+            $res = Db::name('live_house')->where('lid',$lid)->find();
+            if($lid == 0){
+                return json(['code'=>100,'info'=>'error']);
+            }
+            if(empty($res)){
+                return json(['code'=>100,'info'=>'没有该直播间']);
+            }
 //        if($res['status'] == 0){
 //            return json(['code'=>100,'info'=>'该直播间已关闭']);
 //        }
-        if($pwd == $res['live_pwd']){
-            return json(['code'=>200,'lid'=>$lid]);
-        }else{
-            return json(['code'=>100,'info'=>'密码错误']);
+            if($pwd == $res['live_pwd']){
+                return json(['code'=>200,'lid'=>$lid]);
+            }else{
+                return json(['code'=>100,'info'=>'密码错误']);
+            }
         }
 
     }
 
-
+    /**
+     * 检测直播间状态
+     * @return \think\response\Json
+     */
     public function check_zhibo_status(){
-        $lid = input('lid');
-        if(!$lid){
-            return json(['code'=>100,'info'=>'error']);
-        }
-        $res = Db::name('live_house')->find($lid);
-        if(empty($res)){
-            return json(['code'=>100,'info'=>'none house']);
-        }
+        if(request()->isPost()){
+            $lid = input('lid');
+            if(!$lid){
+                return json(['code'=>100,'info'=>'error']);
+            }
 
-        if($res['status'] == 0){
-            //直播已关闭
-            return json(['code'=>300,'info'=>'','url'=>'']);
+            $res = Db::name('live_house')->where('lid',$lid)->find();
+            if(empty($res)){
+                return json(['code'=>100,'info'=>'none house']);
+            }
+            if($res['status'] == 0){
+                //直播已关闭
+                return json(['code'=>300,'info'=>'','url'=>'','online_user'=> 1]);
 
+            }else{
+                //正在直播当中
+                $times = Cache::get('times');
+                if(!$times){
+                    $times = 1;
+                }
+
+                $online_num = $this->online_info_save_redis($lid)*$times;
+                return json(['code'=>200,'info'=>'','url'=>$res['live_source'],'online_num'=> $online_num]);
+            }
+        }
+    }
+
+    /**
+     * 记录用户信息存到redis
+     */
+    private function online_info_save_redis($lid){
+        $redis = new Redis();
+        $redis->connect('127.0.0.1',6379);
+        session_start();
+        $redis->zAdd('room_'.$lid,time(),session_id());
+        $online_num = $redis->get('room_'.$lid.'_user_online_num');
+        if(!$online_num){
+            return 1;
         }else{
-            //正在直播当中
-            return json(['code'=>200,'info'=>'','url'=>$res['live_source']]);
+            return $online_num;
         }
-
     }
 
     public function auto_create_new_user(){
